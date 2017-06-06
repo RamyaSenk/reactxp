@@ -156,6 +156,8 @@ var TextInput = (function (_super) {
     TextInput.prototype.clear = function () {
         if (this.refs['nativeTextInput']) {
             this.refs['nativeTextInput'].clear();
+            this.refs['nativeTextInput'].setNativeProps({ keyboardType: "email-address" });
+            this.refs['nativeTextInput'].setNativeProps({ keyboardType: "default" });
         }
     };
     return TextInput;

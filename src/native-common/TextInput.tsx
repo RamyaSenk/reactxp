@@ -228,6 +228,8 @@ export class TextInput extends RX.TextInput<TextInputState> {
     clear() {
         if (this.refs['nativeTextInput'] as TextInput) {
             (this.refs['nativeTextInput'] as TextInput).clear();
+            (this.refs['nativeTextInput'] as any).setNativeProps({keyboardType:"email-address"});
+            (this.refs['nativeTextInput'] as any).setNativeProps({keyboardType:"default"});
         }
     }
 }
