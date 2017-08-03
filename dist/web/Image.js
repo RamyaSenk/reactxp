@@ -1,3 +1,4 @@
+"use strict";
 /**
 * Image.tsx
 *
@@ -6,19 +7,23 @@
 *
 * Web-specific implementation of the cross-platform Image abstraction.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var _ = require("./utils/lodashMini");
 var React = require("react");
 var ReactDOM = require("react-dom");
 var SyncTasks = require("synctasks");
 var PropTypes = require("prop-types");
 var restyleForInlineText = require("./utils/restyleForInlineText");
-var RX = require("../common/Interfaces");
 var Styles_1 = require("./Styles");
 var _styles = {
     image: {
@@ -86,12 +91,12 @@ var XhrBlobUrlCache = (function () {
             }
         }
     };
+    // Use a global cache to work around the image loading delays introduced by the xhr requests. This is especially
+    // visible when scrolling a virtual list view which contains xhr images.
+    XhrBlobUrlCache._maximumItems = 128;
+    XhrBlobUrlCache._cachedXhrBlobUrls = {};
     return XhrBlobUrlCache;
 }());
-// Use a global cache to work around the image loading delays introduced by the xhr requests. This is especially
-// visible when scrolling a virtual list view which contains xhr images.
-XhrBlobUrlCache._maximumItems = 128;
-XhrBlobUrlCache._cachedXhrBlobUrls = {};
 var Image = (function (_super) {
     __extends(Image, _super);
     function Image(props) {
@@ -276,7 +281,7 @@ var Image = (function (_super) {
             reactElement;
     };
     Image.prototype._getStyles = function () {
-        var combinedStyles = Styles_1.default.combine(_styles.defaultContainer, this.props.style);
+        var combinedStyles = Styles_1.default.combine([_styles.defaultContainer, this.props.style]);
         combinedStyles['display'] = 'flex';
         // It is necessary to wrap the url in quotes as in url("a.jpg?q=(a and b)").
         // If the url is unquoted and contains paranthesis, e.g. a.jpg?q=(a and b), it will become url(a.jpg?q=(a and b))
@@ -323,14 +328,13 @@ var Image = (function (_super) {
     Image.prototype.getNativeHeight = function () {
         return this._nativeImageHeight;
     };
+    Image.contextTypes = {
+        isRxParentAText: PropTypes.bool
+    };
+    Image.childContextTypes = {
+        isRxParentAText: PropTypes.bool.isRequired
+    };
     return Image;
-}(RX.Image));
-Image.contextTypes = {
-    isRxParentAText: PropTypes.bool
-};
-Image.childContextTypes = {
-    isRxParentAText: PropTypes.bool.isRequired
-};
+}(React.Component));
 exports.Image = Image;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Image;

@@ -1,3 +1,4 @@
+"use strict";
 /**
 * TextInput.tsx
 *
@@ -6,16 +7,19 @@
 *
 * Web-specific implementation of the cross-platform TextInput abstraction.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var _ = require("./utils/lodashMini");
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var ReactDOM = require("react-dom");
-var RX = require("../common/Interfaces");
 var Styles_1 = require("./Styles");
 var FocusManager_1 = require("./utils/FocusManager");
 var _styles = {
@@ -123,13 +127,14 @@ var TextInput = (function (_super) {
         }
     };
     TextInput.prototype.render = function () {
-        var combinedStyles = Styles_1.default.combine(_styles.defaultStyle, this.props.style);
-        // Always hide the outline and border.
-        combinedStyles = _.extend({
-            outline: 'none',
-            border: 'none',
-            resize: 'none'
-        }, combinedStyles);
+        var combinedStyles = Styles_1.default.combine([_styles.defaultStyle, this.props.style]);
+        // Always hide the outline.
+        combinedStyles.outline = 'none';
+        combinedStyles.resize = 'none';
+        // Set the border to zero width if not otherwise specified.
+        if (combinedStyles.borderWidth === undefined) {
+            combinedStyles.borderWidth = 0;
+        }
         // By default, the control is editable.
         var editable = (this.props.editable !== undefined ? this.props.editable : true);
         var spellCheck = (this.props.spellCheck !== undefined ? this.props.spellCheck : this.props.autoCorrect);
@@ -202,8 +207,7 @@ var TextInput = (function (_super) {
         }
     };
     return TextInput;
-}(RX.TextInput));
+}(React.Component));
 exports.TextInput = TextInput;
 FocusManager_1.applyFocusableComponentMixin(TextInput);
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = TextInput;

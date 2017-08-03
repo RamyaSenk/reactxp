@@ -1,3 +1,4 @@
+"use strict";
 /**
 * AccessibilityUtil.ts
 *
@@ -6,7 +7,7 @@
 *
 * Common accessibility interface for platform-specific accessibility utilities.
 */
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var Types = require("../common/Types");
 exports.ImportantForAccessibilityMap = (_a = {},
     _a[Types.ImportantForAccessibility.Auto] = 'auto',

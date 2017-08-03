@@ -30,5 +30,5 @@ export declare class FrontLayerViewManager {
     dismissAllPopups(): void;
     private _renderRootView();
 }
-declare var _default: FrontLayerViewManager;
+declare const _default: FrontLayerViewManager;
 export default _default;

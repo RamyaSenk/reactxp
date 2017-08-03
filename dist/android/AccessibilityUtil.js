@@ -1,3 +1,4 @@
+"use strict";
 /**
 * AccessibilityUtil.ts
 *
@@ -6,12 +7,17 @@
 *
 * Android-specific accessibility utils.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var RN = require("react-native");
 var Accessibility_1 = require("../native-common/Accessibility");
 var AccessibilityUtil_1 = require("../common/AccessibilityUtil");
@@ -37,5 +43,4 @@ var AccessibilityUtil = (function (_super) {
     return AccessibilityUtil;
 }(AccessibilityUtil_1.AccessibilityPlatformUtil));
 exports.AccessibilityUtil = AccessibilityUtil;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = new AccessibilityUtil();

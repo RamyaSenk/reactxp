@@ -3,5 +3,5 @@ export declare class International {
     forceRTL(force: boolean): void;
     isRTL(): boolean;
 }
-declare var _default: International;
+declare const _default: International;
 export default _default;

@@ -2,5 +2,5 @@ import { StyleLeakDetector as CommonStyleLeakDetector } from '../common/StyleLea
 export declare class StyleLeakDetector extends CommonStyleLeakDetector {
     protected isDisabled(): boolean;
 }
-declare var _default: StyleLeakDetector;
+declare const _default: StyleLeakDetector;
 export default _default;

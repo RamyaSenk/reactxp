@@ -1,9 +1,17 @@
-import RX = require('../common/Interfaces');
+/**
+* ActivityIndicator.tsx
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
+*
+* Control to display an animated activity indicator.
+*/
+import React = require('react');
 import Types = require('../common/Types');
 export interface ActivityIndicatorState {
     isVisible?: boolean;
 }
-export declare class ActivityIndicator extends RX.ActivityIndicator<ActivityIndicatorState> {
+export declare class ActivityIndicator extends React.Component<Types.ActivityIndicatorProps, ActivityIndicatorState> {
     private _isMounted;
     constructor(props: Types.ActivityIndicatorProps);
     componentDidMount(): void;

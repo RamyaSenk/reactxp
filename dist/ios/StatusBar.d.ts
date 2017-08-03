@@ -7,5 +7,5 @@ export declare class StatusBar extends RX.StatusBar {
     setBackgroundColor(color: string, animated: boolean): void;
     setTranslucent(translucent: boolean): void;
 }
-declare var _default: StatusBar;
+declare const _default: StatusBar;
 export default _default;

@@ -1,3 +1,4 @@
+"use strict";
 /**
 * ActivityIndicator.tsx
 *
@@ -6,17 +7,20 @@
 *
 * Control to display an animated activity indicator.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 /* tslint:disable:no-unused-variable */
 var RN = require("react-native");
-/* tslint:enable:no-unused-variable */
-var RX = require("../common/Interfaces");
 var ActivityIndicator = (function (_super) {
     __extends(ActivityIndicator, _super);
     function ActivityIndicator(props) {
@@ -62,7 +66,6 @@ var ActivityIndicator = (function (_super) {
         return (React.createElement(RN.ActivityIndicator, { animating: this.state.isVisible, color: this.state.isVisible ? this.props.color : 'transparent', size: size }));
     };
     return ActivityIndicator;
-}(RX.ActivityIndicator));
+}(React.Component));
 exports.ActivityIndicator = ActivityIndicator;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = ActivityIndicator;

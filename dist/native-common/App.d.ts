@@ -5,5 +5,5 @@ export declare class App extends RX.App {
     initialize(debug: boolean, development: boolean): void;
     getActivationState(): Types.AppActivationState;
 }
-declare var _default: App;
+declare const _default: App;
 export default _default;

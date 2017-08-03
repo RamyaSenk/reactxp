@@ -11,5 +11,5 @@ import { Accessibility as CommonAccessibility } from '../common/Accessibility';
 export declare class Accessibility extends CommonAccessibility {
     isScreenReaderEnabled(): boolean;
 }
-declare var _default: Accessibility;
+declare const _default: Accessibility;
 export default _default;

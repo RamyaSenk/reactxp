@@ -12,5 +12,5 @@ export declare class AccessibilityUtil extends CommonAccessibilityNativeUtil {
     private _sendAccessibilityEvent(component, eventId);
     setAccessibilityFocus(component: React.Component<any, any>): void;
 }
-declare var _default: AccessibilityUtil;
+declare const _default: AccessibilityUtil;
 export default _default;

@@ -1,3 +1,4 @@
+"use strict";
 /**
 * Text.tsx
 *
@@ -6,12 +7,17 @@
 *
 * Android-specific implementation of Text component.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var RN = require("react-native");
 var AccessibilityUtil_1 = require("../native-common/AccessibilityUtil");
@@ -29,7 +35,7 @@ var Text = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Text.prototype._getStyles = function () {
-        return Styles_1.default.combine(_styles.defaultText, this.props.style);
+        return Styles_1.default.combine([_styles.defaultText, this.props.style]);
     };
     // We override the render method to work around a couple of Android-specific
     // bugs in RN. First, numberOfLines needs to be set to null rather than 0 to
@@ -42,5 +48,4 @@ var Text = (function (_super) {
     return Text;
 }(Text_1.Text));
 exports.Text = Text;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Text;

@@ -7,9 +7,8 @@
 * Web-specific implementation of the cross-platform Text abstraction.
 */
 import React = require('react');
-import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
-export declare class Text extends RX.Text<void> {
+export declare class Text extends React.Component<Types.TextProps, {}> {
     static childContextTypes: React.ValidationMap<any>;
     getChildContext(): {
         isRxParentAText: boolean;

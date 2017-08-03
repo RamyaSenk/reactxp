@@ -1,5 +1,6 @@
 import RX = require('../common/Interfaces');
-export declare class WebView extends RX.WebView<{}> {
+import Types = require('../common/Types');
+export declare class WebView extends RX.ViewBase<Types.WebViewProps, {}> {
     render(): JSX.Element;
     reload(): void;
     goBack(): void;

@@ -1,3 +1,4 @@
+"use strict";
 /**
 * Link.tsx
 *
@@ -6,14 +7,18 @@
 *
 * Web-specific implementation of the cross-platform Link abstraction.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
-var RX = require("../common/Interfaces");
 var Styles_1 = require("./Styles");
 var FocusManager_1 = require("./utils/FocusManager");
 var _styles = {
@@ -81,7 +86,8 @@ var Link = (function (_super) {
     Link.prototype._getStyles = function () {
         // There's no way in HTML to properly handle numberOfLines > 1,
         // but we can correctly handle the common case where numberOfLines is 1.
-        var combinedStyles = Styles_1.default.combine(this.props.numberOfLines === 1 ? _styles.ellipsis : _styles.defaultStyle, this.props.style);
+        var combinedStyles = Styles_1.default.combine([this.props.numberOfLines === 1 ? _styles.ellipsis : _styles.defaultStyle,
+            this.props.style]);
         // Handle cursor styles
         if (this.props.selectable) {
             combinedStyles['userSelect'] = 'text';
@@ -93,8 +99,7 @@ var Link = (function (_super) {
         return combinedStyles;
     };
     return Link;
-}(RX.Link));
+}(React.Component));
 exports.Link = Link;
 FocusManager_1.applyFocusableComponentMixin(Link);
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Link;

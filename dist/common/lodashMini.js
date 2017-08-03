@@ -1,3 +1,4 @@
+"use strict";
 /**
 * lodashMini.ts
 *
@@ -6,7 +7,7 @@
 *
 * Imports a subset of lodash library needed for ReactXP's implementation.
 */
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var clone = require("lodash/clone");
 exports.clone = clone;
 var filter = require("lodash/filter");

@@ -1,6 +1,5 @@
 import React = require('react');
 import SyncTasks = require('synctasks');
-import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 export interface ImageState {
     showImgTag?: boolean;
@@ -10,7 +9,7 @@ export interface ImageState {
 export interface ImageContext {
     isRxParentAText?: boolean;
 }
-export declare class Image extends RX.Image<ImageState> {
+export declare class Image extends React.Component<Types.ImageProps, ImageState> {
     static contextTypes: React.ValidationMap<any>;
     context: ImageContext;
     static childContextTypes: React.ValidationMap<any>;
@@ -29,7 +28,7 @@ export declare class Image extends RX.Image<ImageState> {
     private _handleXhrBlob(blob);
     private _startXhrImageFetch(props);
     private _actuallyStartXhrImageFetch(props);
-    render(): JSX.Element;
+    render(): React.ReactElement<any>;
     private _getStyles();
     private _onLoad;
     private _imgOnError;

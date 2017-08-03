@@ -1,3 +1,4 @@
+"use strict";
 /**
 * Alert.ts
 *
@@ -6,7 +7,7 @@
 *
 * Native Alert dialog boxes for ReactXP.
 */
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var RN = require("react-native");
 // Native implementation for alert dialog boxes
 var Alert = (function () {
@@ -18,5 +19,4 @@ var Alert = (function () {
     return Alert;
 }());
 exports.Alert = Alert;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = new Alert();

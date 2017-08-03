@@ -1,3 +1,4 @@
+"use strict";
 /**
 * executeTransition.tsx
 *
@@ -7,7 +8,7 @@
 * Provides a convenient API for applying a CSS transition to a DOM element and
 * notifying when the transition is complete.
 */
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var _ = require("./../utils/lodashMini");
 // Convenient API for applying a CSS transition to a DOM element. Calls `done` when the transition is completed.
 function executeTransition(element, transitions, done) {
@@ -77,5 +78,4 @@ function executeTransition(element, transitions, done) {
     });
 }
 exports.executeTransition = executeTransition;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = executeTransition;

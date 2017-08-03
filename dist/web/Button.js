@@ -1,3 +1,4 @@
+"use strict";
 /**
 * Button.tsx
 *
@@ -6,17 +7,20 @@
 *
 * Web-specific implementation of the cross-platform Button abstraction.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var _ = require("./utils/lodashMini");
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var ReactDOM = require("react-dom");
 var AccessibilityUtil_1 = require("./AccessibilityUtil");
-var RX = require("../common/Interfaces");
 var Styles_1 = require("./Styles");
 var Types = require("../common/Types");
 var FocusManager_1 = require("./utils/FocusManager");
@@ -143,7 +147,7 @@ var Button = (function (_super) {
         }
     };
     Button.prototype._getStyles = function () {
-        var buttonStyles = _.extend.apply(_, [{}].concat(this.props.style));
+        var buttonStyles = Styles_1.default.combine(this.props.style);
         // Specify default syle for padding only if padding is not already specified
         if (buttonStyles && buttonStyles.padding === undefined &&
             buttonStyles.paddingRight === undefined && buttonStyles.paddingLeft === undefined &&
@@ -151,7 +155,7 @@ var Button = (function (_super) {
             buttonStyles.paddingHorizontal === undefined && buttonStyles.paddingVertical === undefined) {
             buttonStyles['padding'] = '0';
         }
-        var combinedStyles = Styles_1.default.combine(_styles.defaultButton, buttonStyles);
+        var combinedStyles = Styles_1.default.combine([_styles.defaultButton, buttonStyles]);
         if (this.props.disabled) {
             combinedStyles.opacity = 0.5;
         }
@@ -164,8 +168,7 @@ var Button = (function (_super) {
         return combinedStyles;
     };
     return Button;
-}(RX.Button));
+}(React.Component));
 exports.Button = Button;
 FocusManager_1.applyFocusableComponentMixin(Button);
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Button;

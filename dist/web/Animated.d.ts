@@ -17,7 +17,7 @@ export declare class Value extends Types.AnimatedValue {
         [key: number]: Animation;
     };
     _listeners: {
-        [key: number]: Types.Animated.ValueListenerCallback;
+        [key: string]: Types.Animated.ValueListenerCallback;
     };
     _animatedValueUniqueId: number;
     _cssProperties: {
@@ -38,7 +38,7 @@ export declare class Value extends Types.AnimatedValue {
     isInitialized(): boolean;
     setAsInitialized(element: HTMLElement): void;
     destroy(): void;
-    addListener(callback: Types.Animated.ValueListenerCallback): number;
+    addListener(callback: Types.Animated.ValueListenerCallback): string;
     removeListener(id: string): void;
     removeAllListeners(): void;
     addAnimation(animation: Animation): number;

@@ -5,5 +5,5 @@ export declare class Accessibility extends CommonAccessibility {
     protected _updateScreenReaderStatus(isEnabled: boolean): void;
     isScreenReaderEnabled(): boolean;
 }
-declare var _default: Accessibility;
+declare const _default: Accessibility;
 export default _default;

@@ -1,3 +1,4 @@
+"use strict";
 /**
 * GestureView.tsx
 *
@@ -7,12 +8,17 @@
 * Web-specific implementation of the cross-platform GestureView component.
 * It provides support for the scroll wheel, clicks and double clicks.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var _ = require("./utils/lodashMini");
 var React = require("react");
 var MouseResponder_1 = require("./utils/MouseResponder");
@@ -173,7 +179,7 @@ var GestureView = (function (_super) {
         return (React.createElement("div", { style: this._getStyles(), ref: this._setContainerRef, onClick: this._onClick, onWheel: this._onWheel }, this.props.children));
     };
     GestureView.prototype._getStyles = function () {
-        var combinedStyles = Styles_1.default.combine(_styles.defaultView, this.props.style);
+        var combinedStyles = Styles_1.default.combine([_styles.defaultView, this.props.style]);
         var cursorName = null;
         switch (this.props.mouseOverCursor) {
             case Types.GestureMouseCursor.Grab:
@@ -307,7 +313,6 @@ var GestureView = (function (_super) {
         return this._container.getBoundingClientRect();
     };
     return GestureView;
-}(RX.GestureView));
+}(RX.ViewBase));
 exports.GestureView = GestureView;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = GestureView;

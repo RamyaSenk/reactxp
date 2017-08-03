@@ -1,2 +1,2 @@
-declare var _default: Window;
+declare const _default: Window;
 export = _default;

@@ -21,5 +21,5 @@ export declare class UserInterface extends RX.UserInterface {
     evaluateTouchLatency(e: Types.SyntheticEvent): void;
     isNavigatingWithKeyboard(): boolean;
 }
-declare var _default: UserInterface;
+declare const _default: UserInterface;
 export default _default;

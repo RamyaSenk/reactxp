@@ -1,3 +1,4 @@
+"use strict";
 /**
 * Alert.ts
 *
@@ -6,12 +7,17 @@
 *
 * Web Alert dialog boxes.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var RX = require("../common/Interfaces");
 // Web/HTML implementation for alert dialog boxes
 var Alert = (function (_super) {
@@ -28,6 +34,7 @@ var Alert = (function (_super) {
                 /* tslint:disable:no-unused-variable */
                 // new instance of Notification needs to be created but not used
                 var htmlNotification = new Notification(title, options_1);
+                /* tslint:enable:no-unused-variable */
             }
             else if (Notification.permission !== 'denied') {
                 Notification.requestPermission(function (permission) {
@@ -35,6 +42,7 @@ var Alert = (function (_super) {
                         /* tslint:disable:no-unused-variable */
                         // new instance of Notification needs to be created but not used
                         var htmlNotification = new Notification(title, options_1);
+                        /* tslint:enable:no-unused-variable */
                     }
                 });
             }
@@ -47,5 +55,4 @@ var Alert = (function (_super) {
     return Alert;
 }(RX.Alert));
 exports.Alert = Alert;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = new Alert();

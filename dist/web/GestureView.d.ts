@@ -1,5 +1,6 @@
 import RX = require('../common/Interfaces');
-export declare class GestureView extends RX.GestureView<{}> {
+import Types = require('../common/Types');
+export declare class GestureView extends RX.ViewBase<Types.GestureViewProps, {}> {
     private _id;
     private _container;
     private _doubleTapTimer;

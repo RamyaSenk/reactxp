@@ -1,10 +1,10 @@
 import React = require('react');
-import SubscribableEvent = require('../common/SubscribableEvent');
+import SubscribableEvent from 'subscribableevent';
 import RootView from './RootView';
 import Types = require('../common/Types');
 export declare class FrontLayerViewManager {
     private _overlayStack;
-    event_changed: SubscribableEvent.SubscribableEvent<() => void>;
+    event_changed: SubscribableEvent<() => void>;
     showModal(modal: React.ReactElement<Types.ViewProps>, modalId: string): void;
     isModalDisplayed(modalId: string): boolean;
     dismissModal(modalId: string): void;
@@ -21,5 +21,5 @@ export declare class FrontLayerViewManager {
     private _findIndexOfPopup(popupId);
     private _getActiveOverlay();
 }
-declare var _default: FrontLayerViewManager;
+declare const _default: FrontLayerViewManager;
 export default _default;

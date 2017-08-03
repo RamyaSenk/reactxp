@@ -1,3 +1,4 @@
+"use strict";
 /**
 * AppConfig.tsx
 *
@@ -6,7 +7,7 @@
 *
 * A simple class to store application config.
 */
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var AppConfig = (function () {
     function AppConfig() {
         this._isDebug = false;
@@ -26,5 +27,4 @@ var AppConfig = (function () {
 }());
 exports.AppConfig = AppConfig;
 var instance = new AppConfig();
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = instance;

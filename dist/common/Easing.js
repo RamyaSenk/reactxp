@@ -1,3 +1,4 @@
+"use strict";
 /**
 * Easing.tsx
 *
@@ -6,7 +7,7 @@
 *
 * Easing functions for animations.
 */
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var Bezier = require("./Bezier");
 var Easing = (function () {
     function Easing() {
@@ -105,5 +106,4 @@ var Easing = (function () {
     return Easing;
 }());
 exports.Easing = Easing;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = new Easing();

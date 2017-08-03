@@ -9,7 +9,6 @@
 */
 import React = require('react');
 import AnimatedImpl = require('./Animated');
-import RXInterface = require('../common/Interfaces');
 import RXTypes = require('../common/Types');
 import { Accessibility as AccessibilityType } from './Accessibility';
 import { ActivityIndicator as ActivityIndicatorImpl } from './ActivityIndicator';
@@ -107,6 +106,5 @@ declare module ReactXP {
     var createElement: typeof React.createElement;
     var Children: React.ReactChildren;
     var __spread: any;
-    export import DeviceNetworkType = RXInterface.DeviceNetworkType;
 }
 export = ReactXP;

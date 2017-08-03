@@ -1,3 +1,4 @@
+"use strict";
 /*
 * Navigator.tsx
 *
@@ -9,18 +10,22 @@
 * by state updates instigated by its public helpers like immediatelyResetRouteStack, push,
 * pop, which update the state and cause transitions.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var _ = require("./utils/lodashMini");
 var React = require("react");
 var ReactDOM = require("react-dom");
 var rebound = require("rebound");
 var NavigatorSceneConfigFactory_1 = require("./NavigatorSceneConfigFactory");
-var RX = require("../common/Interfaces");
 var Styles_1 = require("./Styles");
 var View_1 = require("./View");
 // Default styles
@@ -268,7 +273,7 @@ var Navigator = (function (_super) {
     // Add styles on the scene - At this time, the scene should be mounted and sitting in the
     // DOM. We are just adding giving styles to this current scene.
     Navigator.prototype._enableScene = function (sceneIndex) {
-        var sceneStyle = Styles_1.default.combine(undefined, [_styles.baseScene, _styles.sceneStyle, _styles.defaultSceneStyle]);
+        var sceneStyle = Styles_1.default.combine([_styles.baseScene, _styles.sceneStyle, _styles.defaultSceneStyle]);
         // Then restore the top value for this scene.
         var enabledSceneNativeProps = {
             style: {
@@ -450,7 +455,6 @@ var Navigator = (function (_super) {
         _.assign(element.style, flatStyles);
     };
     return Navigator;
-}(RX.Navigator));
+}(React.Component));
 exports.Navigator = Navigator;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Navigator;

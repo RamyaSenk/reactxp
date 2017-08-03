@@ -1,3 +1,4 @@
+"use strict";
 /**
 * WebView.tsx
 *
@@ -6,12 +7,17 @@
 *
 * A control that allows the display of an independent web page.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var ReactDOM = require("react-dom");
 var RX = require("../common/Interfaces");
@@ -95,7 +101,7 @@ var WebView = (function (_super) {
         }
     };
     WebView.prototype.render = function () {
-        var styles = Styles_1.default.combine(_styles.webViewDefault, this.props.style);
+        var styles = Styles_1.default.combine([_styles.webViewDefault, this.props.style]);
         var sandbox = this.props.sandbox !== undefined
             ? this.props.sandbox
             : (this.props.javaScriptEnabled ? Types.WebViewSandboxMode.AllowScripts : Types.WebViewSandboxMode.None);
@@ -128,9 +134,8 @@ var WebView = (function (_super) {
             iframeDOM.contentWindow.history.forward();
         }
     };
+    WebView._webFrameNumber = 1;
     return WebView;
-}(RX.WebView));
-WebView._webFrameNumber = 1;
+}(RX.ViewBase));
 exports.WebView = WebView;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = WebView;

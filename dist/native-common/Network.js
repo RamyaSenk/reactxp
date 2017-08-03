@@ -1,3 +1,4 @@
+"use strict";
 /**
 * Network.ts
 *
@@ -6,15 +7,21 @@
 *
 * Native implementation of network information APIs.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var RN = require("react-native");
 var SyncTasks = require("synctasks");
 var RX = require("../common/Interfaces");
+var Types = require("../common/Types");
 var Network = (function (_super) {
     __extends(Network, _super);
     function Network() {
@@ -32,7 +39,7 @@ var Network = (function (_super) {
         });
         return deferred.promise();
     };
-    Network.prototype.fetchNetworkType = function () {
+    Network.prototype.getType = function () {
         return SyncTasks.fromThenable(RN.NetInfo.fetch().then(function (networkType) {
             return Network._NativeNetworkTypeToDeviceNetworkType(networkType);
         }));
@@ -43,22 +50,21 @@ var Network = (function (_super) {
     Network._NativeNetworkTypeToDeviceNetworkType = function (networkType) {
         switch (networkType) {
             case 'UNKNOWN':
-                return RX.DeviceNetworkType.UNKNOWN;
+                return Types.DeviceNetworkType.Unknown;
             case 'NONE':
-                return RX.DeviceNetworkType.NONE;
+                return Types.DeviceNetworkType.None;
             case 'WIFI':
-                return RX.DeviceNetworkType.WIFI;
+                return Types.DeviceNetworkType.Wifi;
             case 'MOBILE_2G':
-                return RX.DeviceNetworkType.MOBILE_2G;
+                return Types.DeviceNetworkType.Mobile2G;
             case 'MOBILE_3G':
-                return RX.DeviceNetworkType.MOBILE_3G;
+                return Types.DeviceNetworkType.Mobile3G;
             case 'MOBILE_4G':
-                return RX.DeviceNetworkType.MOBILE_4G;
+                return Types.DeviceNetworkType.Mobile4G;
         }
-        return RX.DeviceNetworkType.UNKNOWN;
+        return Types.DeviceNetworkType.Unknown;
     };
     return Network;
 }(RX.Network));
 exports.Network = Network;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = new Network();

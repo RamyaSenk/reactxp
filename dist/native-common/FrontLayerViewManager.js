@@ -1,3 +1,4 @@
+"use strict";
 /**
 * FrontLayerViewManager.ts
 *
@@ -7,12 +8,12 @@
 * Manages stackable modals and popup views that are posted and dismissed
 * by the Types showModal/dismissModal/showPopup/dismissPopup methods.
 */
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var _ = require("./lodashMini");
 var React = require("react");
 var RN = require("react-native");
+var subscribableevent_1 = require("subscribableevent");
 var ModalContainer_1 = require("../native-common/ModalContainer");
-var SubscribableEvent = require("../common/SubscribableEvent");
 var PopupContainerView_1 = require("./PopupContainerView");
 var ModalStackContext = (function () {
     function ModalStackContext(modalId, modal) {
@@ -40,26 +41,35 @@ var FrontLayerViewManager = (function () {
     function FrontLayerViewManager() {
         var _this = this;
         this._overlayStack = [];
-        this.event_changed = new SubscribableEvent.SubscribableEvent();
+        this.event_changed = new subscribableevent_1.default();
         this._onBackgroundPressed = function (e) {
             e.persist();
             var activePopupContext = _this._getActiveOverlay();
             if (!(activePopupContext instanceof PopupStackContext)) {
                 return;
             }
-            if (activePopupContext.popupOptions && activePopupContext.popupOptions.onAnchorPressed) {
-                RN.NativeModules.UIManager.measureInWindow(activePopupContext.anchorHandle, function (x, y, width, height, pageX, pageY) {
-                    var touchEvent = e.nativeEvent;
-                    var anchorRect = { left: x, top: y, right: x + width, bottom: y + height, width: width, height: height };
-                    // Find out if the press event was on the anchor so we can notify the caller about it.
-                    if (touchEvent.pageX >= anchorRect.left && touchEvent.pageX < anchorRect.right
-                        && touchEvent.pageY >= anchorRect.top && touchEvent.pageY < anchorRect.bottom) {
-                        // Showing another animation while dimissing the popup creates a conflict in the UI making it not doing one of the
-                        // two animations (i.e.: Opening an actionsheet while dismissing a popup). We introduce this delay to make sure
-                        // the popup dimissing animation has finished before we call the event handler.
-                        setTimeout(function () { activePopupContext.popupOptions.onAnchorPressed(e); }, 500);
-                    }
-                });
+            if (activePopupContext.popupOptions) {
+                if (activePopupContext.popupOptions.onAnchorPressed) {
+                    RN.NativeModules.UIManager.measureInWindow(activePopupContext.anchorHandle, function (x, y, width, height, pageX, pageY) {
+                        var touchEvent = e.nativeEvent;
+                        var anchorRect = { left: x, top: y, right: x + width,
+                            bottom: y + height, width: width, height: height };
+                        // Find out if the press event was on the anchor so we can notify the caller about it.
+                        if (touchEvent.pageX >= anchorRect.left && touchEvent.pageX < anchorRect.right
+                            && touchEvent.pageY >= anchorRect.top && touchEvent.pageY < anchorRect.bottom) {
+                            // Showing another animation while dimissing the popup creates a conflict in the 
+                            // UI making it not doing one of the two animations (i.e.: Opening an actionsheet
+                            // while dismissing a popup). We introduce this delay to make sure the popup 
+                            // dimissing animation has finished before we call the event handler.
+                            setTimeout(function () { activePopupContext.popupOptions.onAnchorPressed(e); }, 500);
+                        }
+                    });
+                }
+                // Avoid dismissing if the caller has explicitly asked to prevent
+                // dismissal on clicks.
+                if (activePopupContext.popupOptions.preventDismissOnPress) {
+                    return;
+                }
             }
             _this._dismissActivePopup();
         };
@@ -162,5 +172,4 @@ var FrontLayerViewManager = (function () {
     return FrontLayerViewManager;
 }());
 exports.FrontLayerViewManager = FrontLayerViewManager;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = new FrontLayerViewManager();

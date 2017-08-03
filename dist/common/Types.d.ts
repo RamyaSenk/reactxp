@@ -8,7 +8,7 @@
 */
 import React = require('react');
 import RX = require('./Interfaces');
-export { SubscribableEvent, SubscriptionToken } from './SubscribableEvent';
+export { default as SubscribableEvent, SubscriptionToken } from 'subscribableevent';
 export declare type ReactNode = React.ReactNode;
 export declare type ReactInterface = {
     createElement<P>(type: string, props?: P, ...children: React.ReactNode[]): React.ReactElement<P>;
@@ -58,7 +58,7 @@ export interface FlexboxStyle {
 export declare abstract class AnimatedValue implements RX.IAnimatedValue {
     constructor(val: number);
     abstract setValue(value: number): void;
-    abstract addListener(callback: any): number;
+    abstract addListener(callback: any): string;
     abstract removeListener(id: string): void;
     abstract removeAllListeners(): void;
     abstract interpolate(config: any): AnimatedValue;
@@ -100,6 +100,10 @@ export interface AnimatedTransformStyle {
     }];
 }
 export declare type StyleRuleSet<T> = T | number;
+export declare type StyleRuleSetOrArray<T> = StyleRuleSet<T> | Array<StyleRuleSet<T>>;
+export interface StyleRuleSetRecursiveArray<T> extends Array<StyleRuleSetOrArray<T> | StyleRuleSetRecursiveArray<T>> {
+}
+export declare type StyleRuleSetRecursive<T> = StyleRuleSet<T> | StyleRuleSetRecursiveArray<T>;
 export interface ViewAndImageCommonStyle extends FlexboxStyle, TransformStyle {
     borderWidth?: number;
     borderColor?: string;
@@ -208,6 +212,8 @@ export interface CommonAccessibilityProps {
     accessibilityLabel?: string;
     accessibilityTraits?: AccessibilityTrait | AccessibilityTrait[];
     tabIndex?: number;
+    accessibilityActions?: string[];
+    onAccessibilityAction?: (e: SyntheticEvent) => void;
 }
 export declare enum ImportantForAccessibility {
     Auto = 1,
@@ -263,7 +269,7 @@ export declare enum AccessibilityTrait {
     None = 32,
 }
 export interface CommonStyledProps<T> extends CommonProps {
-    style?: T | T[];
+    style?: StyleRuleSetRecursive<T>;
 }
 export interface ButtonProps extends CommonStyledProps<ButtonStyleRuleSet>, CommonAccessibilityProps {
     title?: string;
@@ -295,7 +301,7 @@ export interface PickerProps extends CommonProps {
     items: PickerPropsItem[];
     selectedValue: string;
     onValueChange: (itemValue: string, itemPosition: number) => void;
-    style?: PickerStyleRuleSet | PickerStyleRuleSet[];
+    style?: StyleRuleSetRecursive<PickerStyleRuleSet>;
 }
 export interface ImagePropsShared extends CommonProps {
     source: string;
@@ -312,10 +318,10 @@ export interface ImagePropsShared extends CommonProps {
     shouldRasterizeIOS?: boolean;
 }
 export interface ImageProps extends ImagePropsShared {
-    style?: ImageStyleRuleSet | ImageStyleRuleSet[];
+    style?: StyleRuleSetRecursive<ImageStyleRuleSet>;
 }
 export interface AnimatedImageProps extends ImagePropsShared {
-    style?: AnimatedImageStyleRuleSet | (AnimatedImageStyleRuleSet | ImageStyleRuleSet)[];
+    style?: StyleRuleSetRecursive<AnimatedImageStyleRuleSet | ImageStyleRuleSet>;
 }
 export interface TextPropsShared extends CommonProps {
     children?: ReactNode;
@@ -330,10 +336,10 @@ export interface TextPropsShared extends CommonProps {
     onPress?: (e: SyntheticEvent) => void;
 }
 export interface TextProps extends TextPropsShared {
-    style?: TextStyleRuleSet | TextStyleRuleSet[];
+    style?: StyleRuleSetRecursive<TextStyleRuleSet>;
 }
 export interface AnimatedTextProps extends TextPropsShared {
-    style?: AnimatedTextStyleRuleSet | (AnimatedTextStyleRuleSet | TextStyleRuleSet)[];
+    style?: StyleRuleSetRecursive<AnimatedTextStyleRuleSet | TextStyleRuleSet>;
 }
 export declare type ViewLayerType = 'none' | 'software' | 'hardware';
 export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
@@ -369,7 +375,7 @@ export interface ViewPropsShared extends CommonProps, CommonAccessibilityProps {
     underlayColor?: string;
 }
 export interface ViewProps extends ViewPropsShared {
-    style?: ViewStyleRuleSet | ViewStyleRuleSet[];
+    style?: StyleRuleSetRecursive<ViewStyleRuleSet>;
     onContextMenu?: (e: React.SyntheticEvent) => void;
     onStartShouldSetResponder?: (e: React.SyntheticEvent) => boolean;
     onMoveShouldSetResponder?: (e: React.SyntheticEvent) => boolean;
@@ -385,7 +391,7 @@ export interface ViewProps extends ViewPropsShared {
     onResponderTerminationRequest?: (e: React.SyntheticEvent) => boolean;
 }
 export interface AnimatedViewProps extends ViewPropsShared {
-    style?: AnimatedViewStyleRuleSet | (AnimatedViewStyleRuleSet | ViewStyleRuleSet)[];
+    style?: StyleRuleSetRecursive<AnimatedViewStyleRuleSet | ViewStyleRuleSet>;
 }
 export interface GestureState {
     timeStamp: Date;
@@ -462,7 +468,7 @@ export interface GestureViewProps extends CommonStyledProps<ViewStyleRuleSet> {
     releaseOnRequest?: boolean;
 }
 export interface ScrollViewProps extends ViewProps {
-    style?: ScrollViewStyleRuleSet | ScrollViewStyleRuleSet[];
+    style?: StyleRuleSetRecursive<ScrollViewStyleRuleSet>;
     children?: ReactNode;
     vertical?: boolean;
     horizontal?: boolean;
@@ -535,10 +541,10 @@ export interface TextInputPropsShared extends CommonProps, CommonAccessibilityPr
     onScroll?: (newScrollTop: number, newScrollLeft: number) => void;
 }
 export interface TextInputProps extends TextInputPropsShared {
-    style?: TextInputStyleRuleSet | TextInputStyleRuleSet[];
+    style?: StyleRuleSetRecursive<TextInputStyleRuleSet>;
 }
 export interface AnimatedTextInputProps extends TextInputPropsShared {
-    style?: AnimatedTextInputStyleRuleSet | (AnimatedTextInputStyleRuleSet | TextInputStyleRuleSet)[];
+    style?: StyleRuleSetRecursive<AnimatedTextInputStyleRuleSet | TextInputStyleRuleSet>;
 }
 export interface ActivityIndicatorProps extends CommonStyledProps<ActivityIndicatorStyleRuleSet> {
     color: string;
@@ -597,6 +603,7 @@ export interface PopupOptions {
     useInnerPositioning?: boolean;
     onAnchorPressed?: (e: RX.Types.SyntheticEvent) => void;
     dismissIfShown?: boolean;
+    preventDismissOnPress?: boolean;
 }
 export declare enum NavigatorSceneConfigType {
     FloatFromRight = 0,
@@ -732,6 +739,7 @@ export interface KeyboardEvent extends SyntheticEvent {
     altKey: boolean;
     shiftKey: boolean;
     keyCode: number;
+    metaKey: boolean;
 }
 export declare var Children: React.ReactChildren;
 export declare type Dimensions = {
@@ -773,3 +781,11 @@ export interface LayoutInfo {
     height: number;
 }
 export declare type PlatformType = 'web' | 'ios' | 'android' | 'windows';
+export declare enum DeviceNetworkType {
+    Unknown = 0,
+    None = 1,
+    Wifi = 2,
+    Mobile2G = 3,
+    Mobile3G = 4,
+    Mobile4G = 5,
+}

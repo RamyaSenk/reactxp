@@ -14,5 +14,5 @@ export declare class Clipboard extends RX.Clipboard {
     private static _createInvisibleNode();
     private static _copyNode(node);
 }
-declare var _default: Clipboard;
+declare const _default: Clipboard;
 export default _default;

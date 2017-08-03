@@ -1,3 +1,4 @@
+"use strict";
 /**
 * Interfaces.ts
 *
@@ -7,15 +8,20 @@
 * Defines the template for the ReactXP interface that needs to be
 * implemented for each platform.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
+var subscribableevent_1 = require("subscribableevent");
 var AppConfig_1 = require("./AppConfig");
-var SubscribableEvent = require("./SubscribableEvent");
 var Types = require("./Types");
 exports.Types = Types;
 var ActivityIndicator = (function (_super) {
@@ -74,9 +80,9 @@ var AnimatedView = (function (_super) {
 exports.AnimatedView = AnimatedView;
 var App = (function () {
     function App() {
-        this.activationStateChangedEvent = new SubscribableEvent.SubscribableEvent();
+        this.activationStateChangedEvent = new subscribableevent_1.default();
         // Memory Warnings
-        this.memoryWarningEvent = new SubscribableEvent.SubscribableEvent();
+        this.memoryWarningEvent = new subscribableevent_1.default();
     }
     // Initialization
     App.prototype.initialize = function (debug, development) {
@@ -87,9 +93,9 @@ var App = (function () {
 exports.App = App;
 var UserInterface = (function () {
     function UserInterface() {
-        this.contentSizeMultiplierChangedEvent = new SubscribableEvent.SubscribableEvent();
-        this.touchLatencyEvent = new SubscribableEvent.SubscribableEvent();
-        this.keyboardNavigationEvent = new SubscribableEvent.SubscribableEvent();
+        this.contentSizeMultiplierChangedEvent = new subscribableevent_1.default();
+        this.touchLatencyEvent = new subscribableevent_1.default();
+        this.keyboardNavigationEvent = new subscribableevent_1.default();
     }
     return UserInterface;
 }());
@@ -108,14 +114,14 @@ var Popup = (function () {
 exports.Popup = Popup;
 var Linking = (function () {
     function Linking() {
-        this.deepLinkRequestEvent = new SubscribableEvent.SubscribableEvent();
+        this.deepLinkRequestEvent = new subscribableevent_1.default();
     }
     return Linking;
 }());
 exports.Linking = Linking;
 var Accessibility = (function () {
     function Accessibility() {
-        this.screenReaderChangedEvent = new SubscribableEvent.SubscribableEvent();
+        this.screenReaderChangedEvent = new subscribableevent_1.default();
     }
     return Accessibility;
 }());
@@ -186,18 +192,9 @@ var Navigator = (function (_super) {
     return Navigator;
 }(React.Component));
 exports.Navigator = Navigator;
-var DeviceNetworkType;
-(function (DeviceNetworkType) {
-    DeviceNetworkType[DeviceNetworkType["UNKNOWN"] = 0] = "UNKNOWN";
-    DeviceNetworkType[DeviceNetworkType["NONE"] = 1] = "NONE";
-    DeviceNetworkType[DeviceNetworkType["WIFI"] = 2] = "WIFI";
-    DeviceNetworkType[DeviceNetworkType["MOBILE_2G"] = 3] = "MOBILE_2G";
-    DeviceNetworkType[DeviceNetworkType["MOBILE_3G"] = 4] = "MOBILE_3G";
-    DeviceNetworkType[DeviceNetworkType["MOBILE_4G"] = 5] = "MOBILE_4G";
-})(DeviceNetworkType = exports.DeviceNetworkType || (exports.DeviceNetworkType = {}));
 var Network = (function () {
     function Network() {
-        this.connectivityChangedEvent = new SubscribableEvent.SubscribableEvent();
+        this.connectivityChangedEvent = new subscribableevent_1.default();
     }
     return Network;
 }());
@@ -210,9 +207,9 @@ var Platform = (function () {
 exports.Platform = Platform;
 var Input = (function () {
     function Input() {
-        this.backButtonEvent = new SubscribableEvent.SubscribableEvent();
-        this.keyDownEvent = new SubscribableEvent.SubscribableEvent();
-        this.keyUpEvent = new SubscribableEvent.SubscribableEvent();
+        this.backButtonEvent = new subscribableevent_1.default(true);
+        this.keyDownEvent = new subscribableevent_1.default();
+        this.keyUpEvent = new subscribableevent_1.default();
     }
     return Input;
 }());
@@ -255,7 +252,7 @@ var TextInput = (function (_super) {
 exports.TextInput = TextInput;
 var UserPresence = (function () {
     function UserPresence() {
-        this.userPresenceChangedEvent = new SubscribableEvent.SubscribableEvent();
+        this.userPresenceChangedEvent = new subscribableevent_1.default();
     }
     return UserPresence;
 }());

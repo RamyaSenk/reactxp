@@ -1,3 +1,4 @@
+"use strict";
 /**
 * RootView.tsx
 *
@@ -8,12 +9,17 @@
 * layering or modals, etc. in the web implementation of the ReactXP
 * cross-platform library.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var _ = require("./utils/lodashMini");
 var React = require("react");
 var ReactDOM = require("react-dom");
@@ -108,6 +114,9 @@ var RootView = (function (_super) {
                                 return;
                             }
                         }
+                    }
+                    if (_this.props.activePopupOptions.preventDismissOnPress) {
+                        return;
                     }
                     _this._dismissPopup();
                 });
@@ -536,11 +545,10 @@ var RootView = (function (_super) {
             this.setState(newState);
         }
     };
+    RootView.childContextTypes = {
+        focusManager: PropTypes.object
+    };
     return RootView;
 }(React.Component));
-RootView.childContextTypes = {
-    focusManager: PropTypes.object
-};
 exports.RootView = RootView;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = RootView;

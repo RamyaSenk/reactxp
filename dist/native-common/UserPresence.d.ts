@@ -11,5 +11,5 @@ import RX = require('../common/Interfaces');
 export declare class UserPresence extends RX.UserPresence {
     isUserPresent(): boolean;
 }
-declare var _default: UserPresence;
+declare const _default: UserPresence;
 export default _default;

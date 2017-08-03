@@ -1,3 +1,4 @@
+"use strict";
 /**
 * Styles.ts
 *
@@ -6,12 +7,17 @@
 *
 * Web-specific implementation of style functions.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var _ = require("./utils/lodashMini");
 var RX = require("../common/Interfaces");
 var StyleLeakDetector_1 = require("../common/StyleLeakDetector");
@@ -63,40 +69,48 @@ var Styles = (function (_super) {
         return _this;
     }
     // Combines a set of styles
-    Styles.prototype.combine = function (defaultStyle, ruleSet) {
-        var combinedStyles = {};
-        if (defaultStyle) {
-            combinedStyles = _.extend(combinedStyles, defaultStyle);
+    Styles.prototype.combine = function (ruleSet1, ruleSet2) {
+        if (!ruleSet1 && !ruleSet2) {
+            return undefined;
         }
-        if (ruleSet) {
-            combinedStyles = _.extend.apply(_, [combinedStyles].concat(ruleSet));
+        var ruleSet = ruleSet1;
+        if (ruleSet2) {
+            ruleSet = [ruleSet1, ruleSet2];
         }
-        if ((combinedStyles.marginLeft !== undefined || combinedStyles.marginRight !== undefined ||
-            combinedStyles.marginTop !== undefined || combinedStyles.marginBottom !== undefined) &&
-            combinedStyles.margin !== undefined) {
-            console.error('Conflicting rules for margin specified.');
-            delete combinedStyles.margin;
-        }
-        if ((combinedStyles.paddingLeft !== undefined || combinedStyles.paddingRight !== undefined ||
-            combinedStyles.paddingTop !== undefined || combinedStyles.paddingBottom !== undefined) &&
-            combinedStyles.padding !== undefined) {
-            console.error('Conflicting rules for padding specified.');
-            delete combinedStyles.padding;
-        }
-        if (combinedStyles.borderWidth ||
-            combinedStyles.borderTopWidth || combinedStyles.borderRightWidth ||
-            combinedStyles.borderBottomWidth || combinedStyles.borderLeftWidth) {
-            // If the caller specified a non-zero border width
-            // but no border color or style, set the defaults to
-            // match those of React Native platforms.
-            if (combinedStyles.borderColor === undefined) {
-                combinedStyles.borderColor = 'black';
+        if (ruleSet instanceof Array) {
+            var combinedStyles = {};
+            for (var i = 0; i < ruleSet.length; i++) {
+                var subRuleSet = this.combine(ruleSet[i]);
+                combinedStyles = _.extend(combinedStyles, subRuleSet);
             }
-            if (combinedStyles.borderStyle === undefined) {
-                combinedStyles.borderStyle = 'solid';
+            if ((combinedStyles.marginLeft !== undefined || combinedStyles.marginRight !== undefined ||
+                combinedStyles.marginTop !== undefined || combinedStyles.marginBottom !== undefined) &&
+                combinedStyles.margin !== undefined) {
+                console.error('Conflicting rules for margin specified.');
+                delete combinedStyles.margin;
             }
+            if ((combinedStyles.paddingLeft !== undefined || combinedStyles.paddingRight !== undefined ||
+                combinedStyles.paddingTop !== undefined || combinedStyles.paddingBottom !== undefined) &&
+                combinedStyles.padding !== undefined) {
+                console.error('Conflicting rules for padding specified.');
+                delete combinedStyles.padding;
+            }
+            if (combinedStyles.borderWidth ||
+                combinedStyles.borderTopWidth || combinedStyles.borderRightWidth ||
+                combinedStyles.borderBottomWidth || combinedStyles.borderLeftWidth) {
+                // If the caller specified a non-zero border width
+                // but no border color or style, set the defaults to
+                // match those of React Native platforms.
+                if (combinedStyles.borderColor === undefined) {
+                    combinedStyles.borderColor = 'black';
+                }
+                if (combinedStyles.borderStyle === undefined) {
+                    combinedStyles.borderStyle = 'solid';
+                }
+            }
+            return combinedStyles;
         }
-        return combinedStyles;
+        return ruleSet;
     };
     // Creates opaque styles that can be used for View
     Styles.prototype.createViewStyle = function (ruleSet, cacheStyle) {
@@ -374,5 +388,4 @@ function memoize(func, resolver) {
     return _.memoize(func, resolver);
 }
 exports.memoize = memoize;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = new Styles();

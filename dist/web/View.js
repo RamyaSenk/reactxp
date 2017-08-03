@@ -1,3 +1,4 @@
+"use strict";
 /**
 * View.tsx
 *
@@ -6,12 +7,16 @@
 *
 * Web-specific implementation of the cross-platform View abstraction.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
@@ -20,6 +25,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var ReactDOM = require("react-dom");
 var PropTypes = require("prop-types");
@@ -193,7 +199,7 @@ var View = (function (_super) {
         }
     };
     View.prototype.render = function () {
-        var combinedStyles = Styles_1.default.combine(_styles.defaultStyle, this.props.style);
+        var combinedStyles = Styles_1.default.combine([_styles.defaultStyle, this.props.style]);
         var ariaRole = AccessibilityUtil_1.default.accessibilityTraitToString(this.props.accessibilityTraits);
         var ariaSelected = AccessibilityUtil_1.default.accessibilityTraitToAriaSelected(this.props.accessibilityTraits);
         var isAriaHidden = AccessibilityUtil_1.default.isHidden(this.props.importantForAccessibility);
@@ -263,20 +269,19 @@ var View = (function (_super) {
             this._focusManager.release();
         }
     };
+    View.contextTypes = {
+        isRxParentAText: PropTypes.bool,
+        focusManager: PropTypes.object
+    };
+    View.childContextTypes = {
+        isRxParentAText: PropTypes.bool.isRequired,
+        focusManager: PropTypes.object
+    };
     return View;
 }(ViewBase_1.default));
-View.contextTypes = {
-    isRxParentAText: PropTypes.bool,
-    focusManager: PropTypes.object
-};
-View.childContextTypes = {
-    isRxParentAText: PropTypes.bool.isRequired,
-    focusManager: PropTypes.object
-};
 exports.View = View;
 FocusManager_1.applyFocusableComponentMixin(View, function (nextProps) {
     var tabIndex = nextProps && ('tabIndex' in nextProps) ? nextProps.tabIndex : this.props.tabIndex;
     return tabIndex !== undefined && tabIndex !== -1;
 });
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = View;

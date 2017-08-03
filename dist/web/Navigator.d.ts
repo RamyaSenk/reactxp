@@ -1,5 +1,5 @@
+import React = require('react');
 import { NavigatorSceneConfig } from './NavigatorSceneConfigFactory';
-import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 export interface SpringSystem {
     createSpring(): any;
@@ -29,7 +29,7 @@ export interface NavigatorState {
     transitionQueue?: TransitionToQueueItem[];
     transitionFinished?: TransitionToCallback;
 }
-export declare class Navigator extends RX.Navigator<NavigatorState> {
+export declare class Navigator extends React.Component<Types.NavigatorProps, NavigatorState> {
     private _renderedSceneMap;
     navigatorReference: Navigator;
     springSystem: SpringSystem;

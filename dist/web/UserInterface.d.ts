@@ -30,5 +30,5 @@ export declare class UserInterface extends RX.UserInterface {
     isNavigatingWithKeyboard(): boolean;
     private _keyboardNavigationStateChanged;
 }
-declare var _default: UserInterface;
+declare const _default: UserInterface;
 export default _default;

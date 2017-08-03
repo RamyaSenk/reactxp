@@ -5,7 +5,7 @@ export interface WebViewState {
     webFormIdentifier?: string;
     webFrameIdentifier?: string;
 }
-export declare class WebView extends RX.WebView<WebViewState> {
+export declare class WebView extends RX.ViewBase<Types.WebViewProps, WebViewState> {
     private static _webFrameNumber;
     constructor(props: Types.WebViewProps);
     componentDidMount(): void;

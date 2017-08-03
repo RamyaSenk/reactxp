@@ -7,6 +7,7 @@
 * Custom scrollbar implementation for web.
 */
 'use strict';
+Object.defineProperty(exports, "__esModule", { value: true });
 var UNIT = 'px';
 var SCROLLER_MIN_SIZE = 15;
 var SCROLLER_NEGATIVE_MARGIN = 30;
@@ -316,5 +317,4 @@ var Scrollbar = (function () {
     return Scrollbar;
 }());
 exports.Scrollbar = Scrollbar;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Scrollbar;

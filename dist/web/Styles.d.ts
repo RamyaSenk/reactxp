@@ -1,7 +1,7 @@
 import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 export declare class Styles extends RX.Styles {
-    combine<S>(defaultStyle: any, ruleSet: Types.StyleRuleSet<S> | Types.StyleRuleSet<S>[]): any;
+    combine<S>(ruleSet1: Types.StyleRuleSetRecursive<S>, ruleSet2?: Types.StyleRuleSetRecursive<S>): Types.StyleRuleSetOrArray<S>;
     createViewStyle(ruleSet: Types.ViewStyle, cacheStyle?: boolean): Types.ViewStyleRuleSet;
     createAnimatedViewStyle(ruleSet: Types.AnimatedViewStyle): Types.AnimatedViewStyleRuleSet;
     createScrollViewStyle(ruleSet: Types.ScrollViewStyle, cacheStyle?: boolean): Types.ScrollViewStyleRuleSet;
@@ -26,5 +26,5 @@ export declare class Styles extends RX.Styles {
     private _adaptStyles(def, validate);
 }
 export declare function memoize<T extends Function>(func: T, resolver?: Function): T;
-declare var _default: Styles;
+declare const _default: Styles;
 export default _default;

@@ -11,5 +11,5 @@ import { Linking as CommonLinking } from '../native-common/Linking';
 export declare class Linking extends CommonLinking {
     protected _createSmsUrl(smsInfo: Types.SmsInfo): string;
 }
-declare var _default: Linking;
+declare const _default: Linking;
 export default _default;

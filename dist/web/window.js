@@ -1,3 +1,4 @@
+"use strict";
 /*
 * window.ts
 *
@@ -6,5 +7,4 @@
 *
 * Window module to enable easy mocking.
 */
-"use strict";
 module.exports = typeof (window) !== 'undefined' ? window : {};

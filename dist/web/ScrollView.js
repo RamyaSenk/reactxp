@@ -1,3 +1,4 @@
+"use strict";
 /**
 * ScrollView.tsx
 *
@@ -6,12 +7,17 @@
 *
 * Web-specific implementation of the cross-platform ScrollView abstraction.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var _ = require("./utils/lodashMini");
 var React = require("react");
 var ReactDOM = require("react-dom");
@@ -138,7 +144,7 @@ var ScrollView = (function (_super) {
                 // indication that content will exist here.
                 minWidth: 0
             };
-            _customStyles.bothStyle = Styles_1.default.combine(null, [_customStyles.verticalStyle, _customStyles.horizontalStyle]);
+            _customStyles.bothStyle = Styles_1.default.combine([_customStyles.verticalStyle, _customStyles.horizontalStyle]);
         }
         return _this;
     }
@@ -203,8 +209,7 @@ var ScrollView = (function (_super) {
         else {
             styles.push(sourceStyles.verticalStyle);
         }
-        var defaultStyle = Styles_1.default.combine(null, styles);
-        return Styles_1.default.combine(defaultStyle, this.props.style);
+        return Styles_1.default.combine([styles, this.props.style]);
     };
     ScrollView.prototype._renderNormal = function () {
         return (React.createElement("div", { ref: 'scrollView', onScroll: this._onScroll, onTouchStart: this._onTouchStart, onTouchEnd: this._onTouchEnd, style: this._getContainerStyle() }, this.props.children));
@@ -306,5 +311,4 @@ var ScrollView = (function (_super) {
     return ScrollView;
 }(ViewBase_1.default));
 exports.ScrollView = ScrollView;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = ScrollView;

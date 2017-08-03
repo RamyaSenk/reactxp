@@ -13,5 +13,5 @@ export declare class Input extends RX.Input {
     dispatchKeyDown(e: Types.KeyboardEvent): void;
     dispatchKeyUp(e: Types.KeyboardEvent): void;
 }
-declare var _default: Input;
+declare const _default: Input;
 export default _default;

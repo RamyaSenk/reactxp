@@ -1,9 +1,9 @@
-import RX = require('../common/Interfaces');
+import React = require('react');
 import Types = require('../common/Types');
 export interface TextInputState {
     inputValue?: string;
 }
-export declare class TextInput extends RX.TextInput<TextInputState> {
+export declare class TextInput extends React.Component<Types.TextInputProps, TextInputState> {
     private _selectionStart;
     private _selectionEnd;
     constructor(props: Types.TextInputProps);

@@ -5,5 +5,5 @@ export declare class AccessibilityUtil extends CommonAccessibiltiyUtil {
     accessibilityTraitToString(traits: Types.AccessibilityTrait | Types.AccessibilityTrait[], defaultTrait?: Types.AccessibilityTrait): string;
     accessibilityTraitToAriaSelected(traits: Types.AccessibilityTrait | Types.AccessibilityTrait[]): boolean;
 }
-declare var _default: AccessibilityUtil;
+declare const _default: AccessibilityUtil;
 export default _default;

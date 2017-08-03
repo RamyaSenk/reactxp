@@ -9,5 +9,5 @@ export declare class AccessibilityUtil extends CommonAccessibilityUtil {
     accessibilityLiveRegionToString(liveRegion: Types.AccessibilityLiveRegion): string;
     setAccessibilityFocus(component: React.Component<any, any>): void;
 }
-declare var _default: AccessibilityUtil;
+declare const _default: AccessibilityUtil;
 export default _default;

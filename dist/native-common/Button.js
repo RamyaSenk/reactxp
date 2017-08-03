@@ -1,3 +1,4 @@
+"use strict";
 /**
 * Button.tsx
 *
@@ -6,18 +7,22 @@
 *
 * RN-specific implementation of the cross-platform Button abstraction.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var assert = require("assert");
 var React = require("react");
 var RN = require("react-native");
 var Animated_1 = require("./Animated");
 var AccessibilityUtil_1 = require("./AccessibilityUtil");
-var RX = require("../common/Interfaces");
 var Styles_1 = require("./Styles");
 var Types = require("../common/Types");
 var UserInterface_1 = require("./UserInterface");
@@ -136,7 +141,8 @@ var Button = (function (_super) {
         var accessibilityTrait = AccessibilityUtil_1.default.accessibilityTraitToString(this.props.accessibilityTraits, _defaultAccessibilityTrait);
         var accessibilityComponentType = AccessibilityUtil_1.default.accessibilityComponentTypeToString(this.props.accessibilityTraits, _defaultAccessibilityTrait);
         var opacityStyle = !this.props.disableTouchOpacityAnimation && this._opacityAnimatedStyle;
-        return (React.createElement(RN.Animated.View, { ref: this._onButtonRef, style: Styles_1.default.combine(_styles.defaultButton, [this.props.style, opacityStyle], this.props.disabled && _styles.disabled), accessibilityLabel: this.props.accessibilityLabel || this.props.title, accessibilityTraits: accessibilityTrait, accessibilityComponentType: accessibilityComponentType, importantForAccessibility: importantForAccessibility, onStartShouldSetResponder: this.touchableHandleStartShouldSetResponder, onResponderTerminationRequest: this.touchableHandleResponderTerminationRequest, onResponderGrant: this.touchableHandleResponderGrant, onResponderMove: this.touchableHandleResponderMove, onResponderRelease: this.touchableHandleResponderRelease, onResponderTerminate: this.touchableHandleResponderTerminate, shouldRasterizeIOS: this.props.shouldRasterizeIOS, onAccessibilityTapIOS: this.props.onAccessibilityTapIOS }, this.props.children));
+        return (React.createElement(RN.Animated.View, { ref: this._onButtonRef, style: Styles_1.default.combine([_styles.defaultButton, this.props.style, opacityStyle,
+                this.props.disabled && _styles.disabled]), accessibilityLabel: this.props.accessibilityLabel || this.props.title, accessibilityTraits: accessibilityTrait, accessibilityComponentType: accessibilityComponentType, importantForAccessibility: importantForAccessibility, onStartShouldSetResponder: this.touchableHandleStartShouldSetResponder, onResponderTerminationRequest: this.touchableHandleResponderTerminationRequest, onResponderGrant: this.touchableHandleResponderGrant, onResponderMove: this.touchableHandleResponderMove, onResponderRelease: this.touchableHandleResponderRelease, onResponderTerminate: this.touchableHandleResponderTerminate, shouldRasterizeIOS: this.props.shouldRasterizeIOS, onAccessibilityTapIOS: this.props.onAccessibilityTapIOS }, this.props.children));
     };
     Button.prototype.componentDidMount = function () {
         this._mixin_componentDidMount();
@@ -216,7 +222,6 @@ var Button = (function (_super) {
         });
     };
     return Button;
-}(RX.Button));
+}(React.Component));
 exports.Button = Button;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Button;

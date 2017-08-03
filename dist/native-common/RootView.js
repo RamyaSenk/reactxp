@@ -1,3 +1,4 @@
+"use strict";
 /**
 * RootView.tsx
 *
@@ -6,12 +7,17 @@
 *
 * The top-most view that's used for proper layering or modals and popups.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var RN = require("react-native");
 var Accessibility_1 = require("./Accessibility");
@@ -56,7 +62,7 @@ var RootView = (function (_super) {
             // Setting empty state will trigger a render.
             _this.setState({});
         });
-        // Update announcement text.  
+        // Update announcement text.
         this._newAnnouncementEventChangedSubscription =
             Accessibility_1.default.newAnnouncementReadyEvent.subscribe(function (announcement) {
                 _this.setState({
@@ -90,12 +96,15 @@ var RootView = (function (_super) {
         this.setState(this._getStateFromStore());
     };
     RootView.prototype._getStateFromStore = function () {
+        var mainView = MainViewStore_1.default.getMainView();
+        if (mainView && this.props) {
+            mainView = React.cloneElement(mainView, this.props);
+        }
         return {
-            mainView: MainViewStore_1.default.getMainView()
+            mainView: mainView
         };
     };
     return RootView;
 }(React.Component));
 exports.RootView = RootView;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = RootView;

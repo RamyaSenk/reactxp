@@ -1,3 +1,4 @@
+"use strict";
 /**
 * Image.tsx
 *
@@ -6,12 +7,16 @@
 *
 * RN-specific implementation of the cross-platform Image abstraction.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
@@ -20,11 +25,11 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var RN = require("react-native");
 var SyncTasks = require("synctasks");
 var _ = require("./lodashMini");
-var RX = require("../common/Interfaces");
 var Styles_1 = require("./Styles");
 var _styles = {
     defaultImage: Styles_1.default.createImageStyle({
@@ -73,15 +78,11 @@ var Image = (function (_super) {
     }
     Image.prefetch = function (url) {
         var defer = SyncTasks.Defer();
-        // TODO: #694125 Remove conditional after RN UWP supports prefetch
-        //   https://github.com/ReactWindows/react-native-windows/issues/366
-        if (RN.Platform.OS !== 'windows') {
-            RN.Image.prefetch(url).then(function (value) {
-                defer.resolve(value);
-            }).catch(function (error) {
-                defer.reject(error);
-            });
-        }
+        RN.Image.prefetch(url).then(function (value) {
+            defer.resolve(value);
+        }).catch(function (error) {
+            defer.reject(error);
+        });
         return defer.promise();
     };
     Image.prototype._getAdditionalProps = function () {
@@ -122,7 +123,7 @@ var Image = (function (_super) {
         this.refs['nativeImage'].setNativeProps(nativeProps);
     };
     Image.prototype.getStyles = function () {
-        return Styles_1.default.combine(_styles.defaultImage, this.props.style);
+        return Styles_1.default.combine([_styles.defaultImage, this.props.style]);
     };
     // Note: This works only if you have an onLoaded handler and wait for the image to load.
     Image.prototype.getNativeWidth = function () {
@@ -132,7 +133,6 @@ var Image = (function (_super) {
         return this._nativeImageHeight;
     };
     return Image;
-}(RX.Image));
+}(React.Component));
 exports.Image = Image;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Image;

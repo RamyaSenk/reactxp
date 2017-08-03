@@ -15,5 +15,5 @@ export declare class Modal extends RX.Modal {
     dismiss(modalId: string): void;
     dismissAll(): void;
 }
-declare var _default: Modal;
+declare const _default: Modal;
 export default _default;

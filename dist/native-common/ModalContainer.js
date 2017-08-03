@@ -1,3 +1,4 @@
+"use strict";
 /**
 * ModalContainer.tsx
 *
@@ -6,12 +7,17 @@
 *
 * RN-specific implementation of the cross-platform Modal abstraction.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var RN = require("react-native");
 var _styles = {
@@ -24,7 +30,10 @@ var _styles = {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        // On Android, we need to provide some color to prevent
+        // removal of the view.
+        backgroundColor: 'transparent'
     }
 };
 var ModalContainer = (function (_super) {
@@ -38,5 +47,4 @@ var ModalContainer = (function (_super) {
     return ModalContainer;
 }(React.Component));
 exports.ModalContainer = ModalContainer;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = ModalContainer;

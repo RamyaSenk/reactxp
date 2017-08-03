@@ -11,5 +11,5 @@ import Types = require('../common/Types');
 export declare class Alert extends RX.Alert {
     show(title: string, message?: string, buttons?: Types.AlertButtonSpec[], icon?: string): void;
 }
-declare var _default: Alert;
+declare const _default: Alert;
 export default _default;

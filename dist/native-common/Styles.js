@@ -1,3 +1,4 @@
+"use strict";
 /**
 * Styles.ts
 *
@@ -6,12 +7,17 @@
 *
 * RN-specific implementation of style functions.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var _ = require("./lodashMini");
 var RN = require("react-native");
 var RX = require("../common/Interfaces");
@@ -26,20 +32,37 @@ var Styles = (function (_super) {
     function Styles() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Styles.prototype.combine = function (defaultStyle, ruleSet, overrideStyle) {
-        var styles = [defaultStyle];
-        if (ruleSet) {
-            if (ruleSet instanceof Array) {
-                styles = styles.concat(ruleSet);
-            }
-            else {
-                styles.push(ruleSet);
-            }
+    Styles.prototype.combine = function (ruleSet1, ruleSet2) {
+        if (!ruleSet1 && !ruleSet2) {
+            return undefined;
         }
-        if (overrideStyle) {
-            styles.push(overrideStyle);
+        var ruleSet = ruleSet1;
+        if (ruleSet2) {
+            ruleSet = [ruleSet1, ruleSet2];
         }
-        return styles;
+        if (ruleSet instanceof Array) {
+            var resultArray = [];
+            for (var i = 0; i < ruleSet.length; i++) {
+                var subRuleSet = this.combine(ruleSet[i]);
+                if (subRuleSet instanceof Array) {
+                    resultArray = resultArray.concat(subRuleSet);
+                }
+                else {
+                    resultArray.push(subRuleSet);
+                }
+            }
+            if (resultArray.length === 0) {
+                return undefined;
+            }
+            // Elimiante the array if there's a single style.
+            if (resultArray.length === 1) {
+                return resultArray[0];
+            }
+            return resultArray;
+        }
+        // Handle the case where the input was either undefined
+        // or not an array (a single style).
+        return ruleSet;
     };
     // Creates opaque styles that can be used for View
     Styles.prototype.createViewStyle = function (ruleSet, cacheStyle) {
@@ -154,5 +177,4 @@ var Styles = (function (_super) {
     return Styles;
 }(RX.Styles));
 exports.Styles = Styles;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = new Styles();

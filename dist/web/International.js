@@ -1,3 +1,4 @@
+"use strict";
 /**
 * International.ts
 *
@@ -6,7 +7,7 @@
 *
 * Web-specific implementation for i18n.
 */
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var International = (function () {
     function International() {
     }
@@ -22,5 +23,4 @@ var International = (function () {
     return International;
 }());
 exports.International = International;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = new International();

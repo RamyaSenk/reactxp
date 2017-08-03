@@ -1,3 +1,4 @@
+"use strict";
 /**
 * StyleLeakDetector.ts
 *
@@ -11,7 +12,7 @@
 *  - for rx component you could temporary disable validation by calling pause method and restore by calling resume,
 *    but please make sure that it doesn't leaks first please
 */
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var _ = require("./lodashMini");
 var AppConfig_1 = require("./AppConfig");
 var StyleLeakDetector = (function () {
@@ -84,5 +85,4 @@ var StyleLeakDetector = (function () {
 }());
 exports.StyleLeakDetector = StyleLeakDetector;
 var instance = new StyleLeakDetector();
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = instance;

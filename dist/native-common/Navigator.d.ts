@@ -1,7 +1,15 @@
-import RX = require('../common/Interfaces');
+/**
+* Navigator.tsx
+*
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT license.
+*
+* Common native implementation for Navigator on mobile.
+*/
+import React = require('react');
 import { NavigatorState } from './NavigatorCommon';
 import Types = require('../common/Types');
-export declare class Navigator extends RX.Navigator<NavigatorState> {
+export declare class Navigator extends React.Component<Types.NavigatorProps, NavigatorState> {
     private _delegate;
     private _commandQueue;
     constructor(initialProps: Types.NavigatorProps);

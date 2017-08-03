@@ -8,5 +8,5 @@ export declare class Accessibility extends NativeAccessibility {
     private _postAnnouncement(announcement, resetTimestamp?);
     private _recalcAnnouncement;
 }
-declare var _default: Accessibility;
+declare const _default: Accessibility;
 export default _default;

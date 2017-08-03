@@ -1,3 +1,4 @@
+"use strict";
 /**
 * FrontLayerViewManager.tsx
 *
@@ -6,7 +7,7 @@
 *
 * Manages the layering of the main view, modals and popups.
 */
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var ReactDOM = require("react-dom");
 var RootView_1 = require("./RootView");
@@ -55,9 +56,10 @@ var FrontLayerViewManager = (function () {
         }
     };
     FrontLayerViewManager.prototype.showPopup = function (options, popupId, showDelay) {
-        // If options.dismissIfShown is true, calling this methos will behave like a toggle. On one call, it will open the popup.
-        // If it is called when pop up is seen, it will dismiss the popup.
-        // If options.dismissIfShown is false, we will simply show the popup always.
+        // If options.dismissIfShown is true, calling this method will behave like a toggle.
+        // On one call, it will open the popup. If it is called when pop up is seen, it will
+        // dismiss the popup. If options.dismissIfShown is false, we will simply show the
+        // popup always.
         if (options.dismissIfShown) {
             if (this._shouldPopupBeDismissed(options)) {
                 this.dismissPopup(popupId);
@@ -131,5 +133,4 @@ var FrontLayerViewManager = (function () {
     return FrontLayerViewManager;
 }());
 exports.FrontLayerViewManager = FrontLayerViewManager;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = new FrontLayerViewManager();

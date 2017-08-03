@@ -1,3 +1,4 @@
+"use strict";
 /**
 * Accessibility.tsx
 *
@@ -7,12 +8,17 @@
 * An iOS variant of Accessibility that performs announcements by calling
 * React Native announcement API for iOS.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var RN = require("react-native");
 var Accessibility_1 = require("../native-common/Accessibility");
 var RetryTimeout = 3000; // 3 seconds
@@ -82,5 +88,4 @@ var Accessibility = (function (_super) {
     return Accessibility;
 }(Accessibility_1.Accessibility));
 exports.Accessibility = Accessibility;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = new Accessibility();

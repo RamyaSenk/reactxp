@@ -12,5 +12,5 @@ export declare class ScrollViewConfig {
     setUseCustomScrollbars(value: boolean): void;
     useCustomScrollbars(): boolean;
 }
-declare var _default: ScrollViewConfig;
+declare const _default: ScrollViewConfig;
 export default _default;

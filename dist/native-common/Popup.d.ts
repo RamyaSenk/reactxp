@@ -6,5 +6,5 @@ export declare class Popup extends RX.Popup {
     dismiss(popupId: string): void;
     dismissAll(): void;
 }
-declare var _default: Popup;
+declare const _default: Popup;
 export default _default;

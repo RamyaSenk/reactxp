@@ -1,3 +1,4 @@
+"use strict";
 /**
 * Types.ts
 *
@@ -6,10 +7,10 @@
 *
 * Type definitions for ReactXP framework.
 */
-"use strict";
-var SubscribableEvent_1 = require("./SubscribableEvent");
-exports.SubscribableEvent = SubscribableEvent_1.SubscribableEvent;
-exports.SubscriptionToken = SubscribableEvent_1.SubscriptionToken;
+Object.defineProperty(exports, "__esModule", { value: true });
+var subscribableevent_1 = require("subscribableevent");
+exports.SubscribableEvent = subscribableevent_1.default;
+exports.SubscriptionToken = subscribableevent_1.SubscriptionToken;
 var AnimatedValue = (function () {
     function AnimatedValue(val) {
         // No-op
@@ -150,3 +151,15 @@ var AppActivationState;
     AppActivationState[AppActivationState["Inactive"] = 3] = "Inactive";
     AppActivationState[AppActivationState["Extension"] = 4] = "Extension";
 })(AppActivationState = exports.AppActivationState || (exports.AppActivationState = {}));
+//
+// Network
+// ----------------------------------------------------------------------
+var DeviceNetworkType;
+(function (DeviceNetworkType) {
+    DeviceNetworkType[DeviceNetworkType["Unknown"] = 0] = "Unknown";
+    DeviceNetworkType[DeviceNetworkType["None"] = 1] = "None";
+    DeviceNetworkType[DeviceNetworkType["Wifi"] = 2] = "Wifi";
+    DeviceNetworkType[DeviceNetworkType["Mobile2G"] = 3] = "Mobile2G";
+    DeviceNetworkType[DeviceNetworkType["Mobile3G"] = 4] = "Mobile3G";
+    DeviceNetworkType[DeviceNetworkType["Mobile4G"] = 5] = "Mobile4G";
+})(DeviceNetworkType = exports.DeviceNetworkType || (exports.DeviceNetworkType = {}));

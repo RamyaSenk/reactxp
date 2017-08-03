@@ -8,11 +8,10 @@
 * file instead of internals.
 */
 import React = require('react');
-import RXInterface = require('../common/Interfaces');
 import RXTypes = require('../common/Types');
 import AnimatedImpl = require('./Animated');
 import { Accessibility as AccessibilityType } from '../native-common/Accessibility';
-import { default as ActivityIndicatorImpl } from '../native-common/ActivityIndicator';
+import { default as ActivityIndicatorImpl, ActivityIndicator as ActivityIndicatorType } from '../native-common/ActivityIndicator';
 import { Alert as AlertType } from '../native-common/Alert';
 import { App as AppType } from '../native-common/App';
 import { default as ButtonImpl, Button as ButtonType } from '../native-common/Button';
@@ -44,7 +43,7 @@ declare module ReactXP {
     type Accessibility = AccessibilityType;
     var Accessibility: AccessibilityType;
     export import Animated = AnimatedImpl.Animated;
-    type ActivityIndicator = ActivityIndicatorImpl;
+    type ActivityIndicator = ActivityIndicatorType;
     var ActivityIndicator: typeof ActivityIndicatorImpl;
     type Alert = AlertType;
     var Alert: AlertType;
@@ -107,6 +106,5 @@ declare module ReactXP {
     export import createElement = React.createElement;
     export import Children = React.Children;
     var __spread: any;
-    export import DeviceNetworkType = RXInterface.DeviceNetworkType;
 }
 export = ReactXP;

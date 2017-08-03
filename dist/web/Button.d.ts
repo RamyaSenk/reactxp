@@ -1,6 +1,6 @@
 import React = require('react');
-import RX = require('../common/Interfaces');
-export declare class Button extends RX.Button<void> {
+import Types = require('../common/Types');
+export declare class Button extends React.Component<Types.ButtonProps, {}> {
     private _lastMouseDownTime;
     private _lastMouseDownEvent;
     private _ignoreClick;

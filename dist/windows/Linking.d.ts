@@ -14,5 +14,5 @@ export declare class Linking extends CommonLinking {
     getInitialUrl(): SyncTasks.Promise<string>;
     launchEmail(emailInfo: Types.EmailInfo): SyncTasks.Promise<void>;
 }
-declare var _default: Linking;
+declare const _default: Linking;
 export default _default;

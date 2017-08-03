@@ -1,3 +1,4 @@
+"use strict";
 /**
 * lodashMini.ts
 *
@@ -6,7 +7,7 @@
 *
 * Import and re-export of part of the lodash module. This helps reduce bundle size.
 */
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var assign = require("lodash/assign");
 exports.assign = assign;
 var clone = require("lodash/clone");

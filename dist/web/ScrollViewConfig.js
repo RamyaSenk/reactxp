@@ -1,3 +1,4 @@
+"use strict";
 /**
 * ScrollViewConfig.ts
 *
@@ -7,7 +8,7 @@
 * Web-specific scroll view configuration, required to avoid circular
 * dependency between application and ScrollView.
 */
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var ScrollViewConfig = (function () {
     function ScrollViewConfig() {
         this._useCustomScrollbars = false;
@@ -22,5 +23,4 @@ var ScrollViewConfig = (function () {
     return ScrollViewConfig;
 }());
 exports.ScrollViewConfig = ScrollViewConfig;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = new ScrollViewConfig();

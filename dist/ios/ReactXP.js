@@ -1,3 +1,4 @@
+"use strict";
 /**
 * ReactXP.ts
 *
@@ -7,9 +8,7 @@
 * Wrapper for all ReactXP functionality. Users of ReactXP should import just this
 * file instead of internals.
 */
-"use strict";
 var React = require("react");
-var RXInterface = require("../common/Interfaces");
 var RXTypes = require("../common/Types");
 var AnimatedImpl = require("../native-common/Animated");
 // -- STRANGE THINGS GOING ON HERE --
@@ -62,7 +61,7 @@ var ReactXP;
 (function (ReactXP) {
     ReactXP.Accessibility = Accessibility_1.default;
     ReactXP.Animated = AnimatedImpl.Animated;
-    ReactXP.ActivityIndicator = ActivityIndicator_1.ActivityIndicator;
+    ReactXP.ActivityIndicator = ActivityIndicator_1.default;
     ReactXP.Alert = Alert_1.default;
     ReactXP.App = App_1.default;
     ReactXP.Button = Button_1.default;
@@ -95,7 +94,6 @@ var ReactXP;
     ReactXP.createElement = React.createElement;
     ReactXP.Children = React.Children;
     ReactXP.__spread = React.__spread;
-    ReactXP.DeviceNetworkType = RXInterface.DeviceNetworkType;
 })(ReactXP || (ReactXP = {}));
 // -- STRANGE THINGS GOING ON HERE --
 // See web/ReactXP.tsx for more details.

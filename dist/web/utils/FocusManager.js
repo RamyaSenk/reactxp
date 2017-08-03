@@ -1,3 +1,4 @@
+"use strict";
 /**
 * FocusManager.ts
 *
@@ -6,7 +7,7 @@
 *
 * Manages focusable elements for better keyboard navigation.
 */
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var ReactDOM = require("react-dom");
 var PropTypes = require("prop-types");
 var _lastComponentId = 0;
@@ -230,10 +231,10 @@ var FocusManager = (function () {
             FocusManager._callFocusableComponentStateChangeCallbacks(storedComponent, false);
         }
     };
+    FocusManager._restrictionStack = [];
+    FocusManager._allFocusableComponents = {};
     return FocusManager;
 }());
-FocusManager._restrictionStack = [];
-FocusManager._allFocusableComponents = {};
 exports.FocusManager = FocusManager;
 // A mixin for the focusable elements, to tell the views that
 // they exist and should be accounted during the focus restriction.
@@ -281,5 +282,4 @@ function applyFocusableComponentMixin(Component, isConditionallyFocusable) {
     }
 }
 exports.applyFocusableComponentMixin = applyFocusableComponentMixin;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = FocusManager;

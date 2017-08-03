@@ -1,3 +1,4 @@
+"use strict";
 /**
 * NavigatorCommon.tsx
 *
@@ -7,7 +8,7 @@
 * Common native interfaces for Navigator on mobile.
 * We need this class to avoid circular references between Navigator and NavigatorDelegates.
 */
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var CommandType;
 (function (CommandType) {
     CommandType[CommandType["Push"] = 0] = "Push";

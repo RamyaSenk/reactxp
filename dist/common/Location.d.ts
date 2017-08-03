@@ -16,5 +16,5 @@ export declare class Location extends RX.Location {
     watchPosition(successCallback: Types.LocationSuccessCallback, errorCallback?: Types.LocationFailureCallback, options?: PositionOptions): SyncTasks.Promise<Types.LocationWatchId>;
     clearWatch(watchID: Types.LocationWatchId): void;
 }
-declare var _default: Location;
+declare const _default: Location;
 export default _default;

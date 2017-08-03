@@ -1,3 +1,4 @@
+"use strict";
 /**
 * restyleForInlineText.tsx
 *
@@ -12,7 +13,6 @@
 * with the text. When a ReactXP component is a child of a text, pass the return value
 * of its render method to this utility. See RX.View for an example.
 */
-"use strict";
 var _ = require("./../utils/lodashMini");
 var assert = require("assert");
 var React = require("react");

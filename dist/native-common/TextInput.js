@@ -1,3 +1,4 @@
+"use strict";
 /**
 * TextInput.tsx
 *
@@ -6,20 +7,25 @@
 *
 * RN-specific implementation of the cross-platform TextInput abstraction.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var _ = require("./lodashMini");
 var React = require("react");
 var RN = require("react-native");
 var AccessibilityUtil_1 = require("./AccessibilityUtil");
-var RX = require("../common/Interfaces");
 var Styles_1 = require("./Styles");
 var _styles = {
     defaultTextInput: Styles_1.default.createTextInputStyle({
+        borderWidth: 0,
         padding: 0
     })
 };
@@ -120,14 +126,13 @@ var TextInput = (function (_super) {
     TextInput.prototype.render = function () {
         var editable = (this.props.editable !== undefined ? this.props.editable : true);
         var blurOnSubmit = this.props.blurOnSubmit || !this.props.multiline;
-        return (React.createElement(RN.TextInput, { ref: 'nativeTextInput', multiline: this.props.multiline, style: Styles_1.default.combine(_styles.defaultTextInput, this.props.style), value: this.state.inputValue, autoCorrect: this.props.autoCorrect, spellCheck: this.props.spellCheck, autoCapitalize: this.props.autoCapitalize, autoFocus: this.props.autoFocus, keyboardType: this.props.keyboardType, editable: editable, selectionColor: this.props.selectionColor, maxLength: this.props.maxLength, placeholder: this.props.placeholder, defaultValue: this.props.value, placeholderTextColor: this.props.placeholderTextColor, onSubmitEditing: this.props.onSubmitEditing, onKeyPress: this._onKeyPress, onChangeText: this._onChangeText, onSelectionChange: this._onSelectionChange, onFocus: this._onFocus, onBlur: this._onBlur, onScroll: this._onScroll, selection: { start: this._selectionStart, end: this._selectionEnd }, secureTextEntry: this.props.secureTextEntry, textAlign: this.props.textAlign, keyboardAppearance: this.props.keyboardAppearance, returnKeyType: this.props.returnKeyType, disableFullscreenUI: this.props.disableFullscreenUI, blurOnSubmit: blurOnSubmit, textBreakStrategy: 'simple', accessibilityLabel: this.props.accessibilityLabel, allowFontScaling: this.props.allowFontScaling, maxContentSizeMultiplier: this.props.maxContentSizeMultiplier, underlineColorAndroid: 'transparent' }));
+        return (React.createElement(RN.TextInput, { ref: 'nativeTextInput', multiline: this.props.multiline, style: Styles_1.default.combine([_styles.defaultTextInput, this.props.style]), value: this.state.inputValue, autoCorrect: this.props.autoCorrect, spellCheck: this.props.spellCheck, autoCapitalize: this.props.autoCapitalize, autoFocus: this.props.autoFocus, keyboardType: this.props.keyboardType, editable: editable, selectionColor: this.props.selectionColor, maxLength: this.props.maxLength, placeholder: this.props.placeholder, defaultValue: this.props.value, placeholderTextColor: this.props.placeholderTextColor, onSubmitEditing: this.props.onSubmitEditing, onKeyPress: this._onKeyPress, onChangeText: this._onChangeText, onSelectionChange: this._onSelectionChange, onFocus: this._onFocus, onBlur: this._onBlur, onScroll: this._onScroll, selection: { start: this._selectionStart, end: this._selectionEnd }, secureTextEntry: this.props.secureTextEntry, textAlign: this.props.textAlign, keyboardAppearance: this.props.keyboardAppearance, returnKeyType: this.props.returnKeyType, disableFullscreenUI: this.props.disableFullscreenUI, blurOnSubmit: blurOnSubmit, textBreakStrategy: 'simple', accessibilityLabel: this.props.accessibilityLabel, allowFontScaling: this.props.allowFontScaling, maxContentSizeMultiplier: this.props.maxContentSizeMultiplier, underlineColorAndroid: 'transparent' }));
     };
     TextInput.prototype.blur = function () {
         this.refs['nativeTextInput'].blur();
     };
     TextInput.prototype.focus = function () {
         this.refs['nativeTextInput'].focus();
-        AccessibilityUtil_1.default.setAccessibilityFocus(this);
     };
     TextInput.prototype.setAccessibilityFocus = function () {
         AccessibilityUtil_1.default.setAccessibilityFocus(this);
@@ -157,7 +162,6 @@ var TextInput = (function (_super) {
         this._onChangeText(value);
     };
     return TextInput;
-}(RX.TextInput));
+}(React.Component));
 exports.TextInput = TextInput;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = TextInput;

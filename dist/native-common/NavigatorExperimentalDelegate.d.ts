@@ -1,11 +1,11 @@
-import { NavigationCommand, NavigatorDelegate, NavigatorState } from './NavigatorCommon';
+import { NavigationCommand, NavigatorDelegate } from './NavigatorCommon';
 import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
 export declare class NavigatorExperimentalDelegate extends NavigatorDelegate {
     private _state;
     private _transitionSpec;
     private _navigationInProgress;
-    constructor(navigator: RX.Navigator<NavigatorState>);
+    constructor(navigator: RX.Navigator);
     getRoutes(): Types.NavigatorRoute[];
     immediatelyResetRouteStack(nextRouteStack: Types.NavigatorRoute[]): void;
     render(): JSX.Element;

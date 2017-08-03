@@ -1,3 +1,4 @@
+"use strict";
 /**
 * NavigatorSceneConfigFactory.ts
 *
@@ -9,7 +10,7 @@
 * spring animation for transition between scenes. NavigatorSceneConfigFactory and
 * NavigatorSceneConfig are both exported.
 */
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var _ = require("./utils/lodashMini");
 var Types = require("../common/Types");
 // Defined style interpolators for each transition type
@@ -48,59 +49,59 @@ var SceneConfigStyles = (function () {
         }
         return remaining;
     };
+    SceneConfigStyles.fadeToTheLeft = {
+        translateX: function (t, dimensions) { return (t * -dimensions.width * 0.3) + 'px'; },
+        opacity: 1
+    };
+    SceneConfigStyles.fadeToTheRight = {
+        translateX: function (t, dimensions) { return (t * dimensions.width * 0.3) + 'px'; },
+        opacity: 1
+    };
+    SceneConfigStyles.fadeIn = {
+        opacity: function (t) { return (t); }
+    };
+    SceneConfigStyles.fadeOut = {
+        opacity: function (t) { return (1 - t); }
+    };
+    SceneConfigStyles.fadeOutToTop = {
+        opacity: function (t) { return (1 - t); },
+        translateY: function (t, dimensions) { return (t * -0.1 * dimensions.height) + 'px'; }
+    };
+    SceneConfigStyles.toTheLeft = {
+        translateX: function (t, dimensions) { return (t * -dimensions.width) + 'px'; }
+    };
+    SceneConfigStyles.toTheUp = {
+        translateY: function (t, dimensions) { return (t * -dimensions.height) + 'px'; }
+    };
+    SceneConfigStyles.toTheDown = {
+        translateY: function (t, dimensions) { return (t * dimensions.height) + 'px'; }
+    };
+    SceneConfigStyles.fromTheRight = {
+        opacity: 1,
+        translateX: function (t, dimensions) { return (dimensions.width - (t * dimensions.width)) + 'px'; }
+    };
+    SceneConfigStyles.fromTheLeft = {
+        opacity: 1,
+        translateX: function (t, dimensions) { return (-dimensions.width + (t * dimensions.width)) + 'px'; }
+    };
+    SceneConfigStyles.fromTheDown = {
+        translateY: function (t, dimensions) { return (dimensions.height - t * dimensions.height) + 'px'; }
+    };
+    SceneConfigStyles.fromTheUp = {
+        opacity: 1,
+        translateY: function (t, dimensions) { return (-dimensions.height + t * dimensions.height) + 'px'; }
+    };
+    SceneConfigStyles.fromTheFront = {
+        opacity: 1,
+        translateY: function (t, dimensions) { return (dimensions.height - t * dimensions.height) + 'px'; }
+    };
+    SceneConfigStyles.toTheBack = {
+        scaleX: function (t) { return (1 - (t * 0.05)); },
+        scaleY: function (t) { return (1 - (t * 0.05)); },
+        opacity: 1
+    };
     return SceneConfigStyles;
 }());
-SceneConfigStyles.fadeToTheLeft = {
-    translateX: function (t, dimensions) { return (t * -dimensions.width * 0.3) + 'px'; },
-    opacity: 1
-};
-SceneConfigStyles.fadeToTheRight = {
-    translateX: function (t, dimensions) { return (t * dimensions.width * 0.3) + 'px'; },
-    opacity: 1
-};
-SceneConfigStyles.fadeIn = {
-    opacity: function (t) { return (t); }
-};
-SceneConfigStyles.fadeOut = {
-    opacity: function (t) { return (1 - t); }
-};
-SceneConfigStyles.fadeOutToTop = {
-    opacity: function (t) { return (1 - t); },
-    translateY: function (t, dimensions) { return (t * -0.1 * dimensions.height) + 'px'; }
-};
-SceneConfigStyles.toTheLeft = {
-    translateX: function (t, dimensions) { return (t * -dimensions.width) + 'px'; }
-};
-SceneConfigStyles.toTheUp = {
-    translateY: function (t, dimensions) { return (t * -dimensions.height) + 'px'; }
-};
-SceneConfigStyles.toTheDown = {
-    translateY: function (t, dimensions) { return (t * dimensions.height) + 'px'; }
-};
-SceneConfigStyles.fromTheRight = {
-    opacity: 1,
-    translateX: function (t, dimensions) { return (dimensions.width - (t * dimensions.width)) + 'px'; }
-};
-SceneConfigStyles.fromTheLeft = {
-    opacity: 1,
-    translateX: function (t, dimensions) { return (-dimensions.width + (t * dimensions.width)) + 'px'; }
-};
-SceneConfigStyles.fromTheDown = {
-    translateY: function (t, dimensions) { return (dimensions.height - t * dimensions.height) + 'px'; }
-};
-SceneConfigStyles.fromTheUp = {
-    opacity: 1,
-    translateY: function (t, dimensions) { return (-dimensions.height + t * dimensions.height) + 'px'; }
-};
-SceneConfigStyles.fromTheFront = {
-    opacity: 1,
-    translateY: function (t, dimensions) { return (dimensions.height - t * dimensions.height) + 'px'; }
-};
-SceneConfigStyles.toTheBack = {
-    scaleX: function (t) { return (1 - (t * 0.05)); },
-    scaleY: function (t) { return (1 - (t * 0.05)); },
-    opacity: 1
-};
 // Navigator config class. Navigator works on the instances of this class
 var NavigatorSceneConfig = (function () {
     function NavigatorSceneConfig(intoStyle, outStyle) {

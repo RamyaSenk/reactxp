@@ -1,8 +1,7 @@
 import React = require('react');
 import RN = require('react-native');
-import RX = require('../common/Interfaces');
 import Types = require('../common/Types');
-export declare class Button extends RX.Button<{}> {
+export declare class Button extends React.Component<Types.ButtonProps, {}> {
     private _mixin_componentDidMount;
     private _mixin_componentWillUnmount;
     touchableGetInitialState: () => RN.Touchable.State;

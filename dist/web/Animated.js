@@ -1,3 +1,4 @@
+"use strict";
 /**
 * Animated.tsx
 *
@@ -6,12 +7,16 @@
 *
 * Implements animated components for web version of ReactXP.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
@@ -20,6 +25,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var _ = require("./utils/lodashMini");
 var React = require("react");
 var ReactDOM = require("react-dom");
@@ -174,9 +180,9 @@ var Value = (function (_super) {
     Value.prototype.addListener = function (callback) {
         if (callback) {
             this._listenerId++;
-            this._listeners[this._listenerId] = callback;
+            this._listeners[String(this._listenerId)] = callback;
         }
-        return this._listenerId;
+        return String(this._listenerId);
     };
     // Remove a specific listner.
     Value.prototype.removeListener = function (id) {
@@ -262,7 +268,7 @@ var Value = (function (_super) {
         this._value = value;
         // Notify subscribers about the new value.
         for (var key in this._listeners) {
-            if (typeof this._listeners[key] === 'ValueListenerCallback') {
+            if (typeof this._listeners[key] === 'function') {
                 this._listeners[key](this.getValue());
             }
         }
@@ -532,7 +538,7 @@ function createAnimatedComponent(Component) {
             //   start anytime later.
             // Attempt to get static initial styles for the first build.  After the build,
             // initializeComponent will take over and apply styles dynamically.
-            var styles = Styles_1.default.combine(null, props.style);
+            var styles = Styles_1.default.combine(props.style);
             // Initialize the tricky properties here (e.g. transform).
             this._animatedValues = AnimatedTransform.initialize(styles);
             // Initialize the simple ones here (e.g. opacity);
@@ -579,40 +585,36 @@ function createAnimatedComponent(Component) {
             this._animatedValues = [];
         };
         AnimatedComponentGenerated.prototype.focus = function () {
-            if (this.refs[refName] instanceof View_1.default) {
-                var component = this.refs[refName];
-                if (component.focus) {
-                    component.focus();
-                }
+            var component = this.refs[refName];
+            if (component.focus) {
+                component.focus();
             }
         };
         AnimatedComponentGenerated.prototype.blur = function () {
-            if (this.refs[refName] instanceof View_1.default) {
-                var component = this.refs[refName];
-                if (component.blur) {
-                    component.blur();
-                }
+            var component = this.refs[refName];
+            if (component.blur) {
+                component.blur();
             }
         };
         AnimatedComponentGenerated.prototype.setFocusRestricted = function (restricted) {
-            if (this.refs[refName] instanceof View_1.default) {
-                var view = this.refs[refName];
-                view.setFocusRestricted(restricted);
+            var component = this.refs[refName];
+            if (component.setFocusRestricted) {
+                component.setFocusRestricted(restricted);
             }
         };
         AnimatedComponentGenerated.prototype.setFocusLimited = function (limited) {
-            if (this.refs[refName] instanceof View_1.default) {
-                var view = this.refs[refName];
-                view.setFocusLimited(limited);
+            var component = this.refs[refName];
+            if (component.setFocusLimited) {
+                component.setFocusLimited(limited);
             }
         };
         AnimatedComponentGenerated.prototype.render = function () {
             return (React.createElement(Component, __assign({ style: this._initialStyle }, this._propsWithoutStyle, { ref: refName }), this.props.children));
         };
+        // Update the component's display name for easy debugging in react devtools extension
+        AnimatedComponentGenerated.displayName = "Animated." + (Component.displayName || Component.name || 'Component');
         return AnimatedComponentGenerated;
     }(React.Component));
-    // Update the component's display name for easy debugging in react devtools extension
-    AnimatedComponentGenerated.displayName = "Animated." + (Component.displayName || Component.name || 'Component');
     return AnimatedComponentGenerated;
 }
 exports.Image = createAnimatedComponent(Image_1.default);

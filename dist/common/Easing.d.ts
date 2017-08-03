@@ -13,5 +13,5 @@ export declare class Easing implements Types.Animated.Easing {
     StepStart(): Types.Animated.EasingFunction;
     StepEnd(): Types.Animated.EasingFunction;
 }
-declare var _default: Easing;
+declare const _default: Easing;
 export default _default;

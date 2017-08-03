@@ -7,5 +7,5 @@ export declare class StatusBar extends RX.StatusBar {
     setBarStyle(style: 'default' | 'light-content' | 'dark-content', animated: boolean): void;
     setNetworkActivityIndicatorVisible(value: boolean): void;
 }
-declare var _default: StatusBar;
+declare const _default: StatusBar;
 export default _default;

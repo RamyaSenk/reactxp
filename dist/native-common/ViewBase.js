@@ -1,3 +1,4 @@
+"use strict";
 /**
 * ViewBase.tsx
 *
@@ -6,12 +7,17 @@
 *
 * Base class that is used for several RX views.
 */
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var _ = require("./lodashMini");
 var RX = require("../common/Interfaces");
 var Styles_1 = require("./Styles");
@@ -54,9 +60,9 @@ var ViewBase = (function (_super) {
         // If this platform uses an explicit default view style, push it on to
         // the front of the list of provided styles.
         if (ViewBase._defaultViewStyle) {
-            return Styles_1.default.combine(ViewBase._defaultViewStyle, props.style);
+            return Styles_1.default.combine([ViewBase._defaultViewStyle, props.style]);
         }
-        return props.style;
+        return Styles_1.default.combine(props.style);
     };
     ViewBase.prototype.focus = function () {
         // native mobile platforms doesn't have the notion of focus for Views, so ignore.
@@ -64,9 +70,8 @@ var ViewBase = (function (_super) {
     ViewBase.prototype.blur = function () {
         // native mobile platforms doesn't have the notion of blur for Views, so ignore.
     };
+    ViewBase._defaultViewStyle = null;
     return ViewBase;
 }(RX.ViewBase));
-ViewBase._defaultViewStyle = null;
 exports.ViewBase = ViewBase;
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = ViewBase;
