@@ -21,6 +21,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var _ = require("./utils/lodashMini");
 var React = require("react");
+var AccessibilityUtil_1 = require("./AccessibilityUtil");
 var MouseResponder_1 = require("./utils/MouseResponder");
 var RX = require("../common/Interfaces");
 var Styles_1 = require("./Styles");
@@ -176,7 +177,9 @@ var GestureView = (function (_super) {
         }
     };
     GestureView.prototype.render = function () {
-        return (React.createElement("div", { style: this._getStyles(), ref: this._setContainerRef, onClick: this._onClick, onWheel: this._onWheel }, this.props.children));
+        var ariaRole = AccessibilityUtil_1.default.accessibilityTraitToString(this.props.accessibilityTraits);
+        var isAriaHidden = AccessibilityUtil_1.default.isHidden(this.props.importantForAccessibility);
+        return (React.createElement("div", { style: this._getStyles(), ref: this._setContainerRef, onClick: this._onClick, onWheel: this._onWheel, role: ariaRole, "aria-label": this.props.accessibilityLabel, "aria-hidden": isAriaHidden }, this.props.children));
     };
     GestureView.prototype._getStyles = function () {
         var combinedStyles = Styles_1.default.combine([_styles.defaultView, this.props.style]);
