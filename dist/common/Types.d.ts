@@ -453,7 +453,7 @@ export declare enum PreferredPanGesture {
     Horizontal = 0,
     Vertical = 1,
 }
-export interface GestureViewProps extends CommonStyledProps<ViewStyleRuleSet> {
+export interface GestureViewProps extends CommonStyledProps<ViewStyleRuleSet>, CommonAccessibilityProps {
     onPinchZoom?: (gestureState: MultiTouchGestureState) => void;
     onRotate?: (gestureState: MultiTouchGestureState) => void;
     onScrollWheel?: (gestureState: ScrollWheelGestureState) => void;

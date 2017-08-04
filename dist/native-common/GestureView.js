@@ -50,6 +50,7 @@ var _tapDurationThreshold = 500;
 var _tapPixelThreshold = 4;
 var _doubleTapDurationThreshold = 250;
 var _doubleTapPixelThreshold = 20;
+var _defaultImportantForAccessibility = Types.ImportantForAccessibility.Yes;
 var GestureView = (function (_super) {
     __extends(GestureView, _super);
     function GestureView(props) {
@@ -446,7 +447,10 @@ var GestureView = (function (_super) {
         }
     };
     GestureView.prototype.render = function () {
-        return (React.createElement(RN.View, __assign({ style: this._getStyles(this.props), importantForAccessibility: AccessibilityUtil_1.default.importantForAccessibilityToString(Types.ImportantForAccessibility.Yes) }, this._panResponder.panHandlers), this.props.children));
+        var importantForAccessibility = AccessibilityUtil_1.default.importantForAccessibilityToString(this.props.importantForAccessibility, _defaultImportantForAccessibility);
+        var accessibilityTrait = AccessibilityUtil_1.default.accessibilityTraitToString(this.props.accessibilityTraits);
+        var accessibilityComponentType = AccessibilityUtil_1.default.accessibilityComponentTypeToString(this.props.accessibilityTraits);
+        return (React.createElement(RN.View, __assign({ style: this._getStyles(this.props), importantForAccessibility: importantForAccessibility, accessibilityTraits: accessibilityTrait, accessibilityComponentType: accessibilityComponentType, accessibilityLabel: this.props.accessibilityLabel }, this._panResponder.panHandlers), this.props.children));
     };
     return GestureView;
 }(ViewBase_1.default));
