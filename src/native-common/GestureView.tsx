@@ -514,7 +514,7 @@ export abstract class GestureView extends ViewBase<Types.GestureViewProps, {}> {
         return (
             <RN.View
                 style={ this._getStyles(this.props) }
-                accessible={ true }
+                importantForAccessibility = { AccessibilityUtil.importantForAccessibilityToString(Types.ImportantForAccessibility.Yes)}
                 { ...this._panResponder.panHandlers }
             >
                 { this.props.children }

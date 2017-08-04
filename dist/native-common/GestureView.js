@@ -31,6 +31,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var assert = require("assert");
 var React = require("react");
 var RN = require("react-native");
+var AccessibilityUtil_1 = require("./AccessibilityUtil");
 var Types = require("../common/Types");
 var UserInterface_1 = require("./UserInterface");
 var ViewBase_1 = require("./ViewBase");
@@ -445,7 +446,7 @@ var GestureView = (function (_super) {
         }
     };
     GestureView.prototype.render = function () {
-        return (React.createElement(RN.View, __assign({ style: this._getStyles(this.props), accessible: true }, this._panResponder.panHandlers), this.props.children));
+        return (React.createElement(RN.View, __assign({ style: this._getStyles(this.props), importantForAccessibility: AccessibilityUtil_1.default.importantForAccessibilityToString(Types.ImportantForAccessibility.Yes) }, this._panResponder.panHandlers), this.props.children));
     };
     return GestureView;
 }(ViewBase_1.default));
