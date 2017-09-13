@@ -1,4 +1,5 @@
- /**
+"use strict";
+/**
 * RootView.tsx
 *
 * Copyright (c) Microsoft Corporation. All rights reserved.
@@ -8,77 +9,38 @@
 * layering or modals, etc. in the web implementation of the ReactXP
 * cross-platform library.
 */
-
-import _ = require('./utils/lodashMini');
-import React = require('react');
-import ReactDOM = require('react-dom');
-import { SubscriptionToken } from 'subscribableevent';
-import PropTypes = require('prop-types');
-
-import Accessibility from './Accessibility';
-import AccessibilityUtil from './AccessibilityUtil';
-import Input from './Input';
-import ModalContainer from './ModalContainer';
-import Styles from './Styles';
-import Types = require('../common/Types');
-import FocusManager from './utils/FocusManager';
-import UserInterface from './UserInterface';
-
-export interface RootViewProps {
-    mainView?: React.ReactNode;
-    modal?: React.ReactElement<Types.ViewProps>;
-    activePopupOptions?: Types.PopupOptions;
-    autoDismiss?: boolean;
-    autoDismissDelay?: number;
-    onDismissPopup?: () => void;
-    keyBoardFocusOutline?: string;
-    mouseFocusOutline?: string;
-}
-
-export interface RootViewState {
-    // We need to measure the popup before it can be positioned. This indicates that we're in the "measuring" phase.
-    isMeasuringPopup?: boolean;
-
-    // Measured (unconstrained) dimensions of the popup; not valid if isMeasuringPopup is false.
-    popupWidth?: number;
-    popupHeight?: number;
-
-    // Position of popup relative to its anchor (top, bottom, left, right)
-    anchorPosition?: Types.PopupPosition;
-
-    // Top or left offset of the popup relative to the center of the anchor
-    anchorOffset?: number;
-
-    // Absolute window location of the popup
-    popupTop?: number;
-    popupLeft?: number;
-
-    // Constrained dimensions of the popup once it is placed
-    constrainedPopupWidth?: number;
-    constrainedPopupHeight?: number;
-
-    // Are we currently hovering over the popup?
-    isMouseInPopup?: boolean;
-
-    // Assign css focus class if focus is due to Keyboard or mouse
-    focusClass?: string;
-
-    // Screen Reader text to be announced.
-    announcementText?: string;
-}
-
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var _ = require("./utils/lodashMini");
+var React = require("react");
+var ReactDOM = require("react-dom");
+var PropTypes = require("prop-types");
+var Accessibility_1 = require("./Accessibility");
+var AccessibilityUtil_1 = require("./AccessibilityUtil");
+var Input_1 = require("./Input");
+var ModalContainer_1 = require("./ModalContainer");
+var Styles_1 = require("./Styles");
+var Types = require("../common/Types");
+var FocusManager_1 = require("./utils/FocusManager");
+var UserInterface_1 = require("./UserInterface");
 // Width of the "alley" around popups so they don't get too close to the boundary of the window.
-const _popupAlleyWidth = 8;
-
+var _popupAlleyWidth = 8;
 // How close to the edge of the popup should we allow the anchor offset to get before
 // attempting a different position?
-const _minAnchorOffset = 16;
-
+var _minAnchorOffset = 16;
 // Button code for when right click is pressed in a mouse event
-const _rightClickButtonCode = 2;
-
-const _styles = {
-    liveRegionContainer: Styles.createViewStyle({
+var _rightClickButtonCode = 2;
+var _styles = {
+    liveRegionContainer: Styles_1.default.createViewStyle({
         position: 'absolute',
         overflow: 'hidden',
         opacity: 0,
@@ -89,69 +51,139 @@ const _styles = {
         height: 30
     })
 };
-
-const KEY_CODE_TAB = 9;
-const KEY_CODE_ESC = 27;
-
+var KEY_CODE_TAB = 9;
+var KEY_CODE_ESC = 27;
 // Setting the expected default box-sizing for everything.
 if (typeof document !== 'undefined') {
-    const defaultBoxSizing = '*, *:before, *:after { box-sizing: border-box; }';
-    const style = document.createElement('style');
+    var defaultBoxSizing = '*, *:before, *:after { box-sizing: border-box; }';
+    var style = document.createElement('style');
     style.type = 'text/css';
     style.appendChild(document.createTextNode(defaultBoxSizing));
     document.head.appendChild(style);
 }
-
-export class RootView extends React.Component<RootViewProps, RootViewState> {
-    static childContextTypes: React.ValidationMap<any> = {
-        focusManager: PropTypes.object
-    };
-
-    private _hidePopupTimer: number = null;
-    private _respositionPopupTimer: number = null;
-    private _clickHandlerInstalled = false;
-    private _lockForContextMenu = false;
-    private _keyboardHandlerInstalled = false;
-    private _lockTimeout: number;
-    private _newAnnouncementEventChangedSubscription: SubscriptionToken = null;
-    private _focusManager: FocusManager;
-    private _isNavigatingWithKeyboard: boolean = false;
-    private _isNavigatingWithKeyboardUpateTimer: number;
-
-    constructor(props: RootViewProps) {
-        super(props);
-
+var RootView = (function (_super) {
+    __extends(RootView, _super);
+    function RootView(props) {
+        var _this = _super.call(this, props) || this;
+        _this._hidePopupTimer = null;
+        _this._respositionPopupTimer = null;
+        _this._clickHandlerInstalled = false;
+        _this._lockForContextMenu = false;
+        _this._keyboardHandlerInstalled = false;
+        _this._newAnnouncementEventChangedSubscription = null;
+        _this._isNavigatingWithKeyboard = false;
+        _this._tryClosePopup = function (e) {
+            // Dismiss a visible popup if there's a click outside.
+            var popupContainer = ReactDOM.findDOMNode(_this.refs['popupContainer']);
+            var clickInPopup = false;
+            var el = e.target;
+            while (el) {
+                if (el === popupContainer) {
+                    clickInPopup = true;
+                    break;
+                }
+                el = el.parentElement;
+            }
+            if (!clickInPopup && e.button !== _rightClickButtonCode) {
+                _.defer(function () {
+                    if (_this.props.activePopupOptions) {
+                        var anchorReference = _this.props.activePopupOptions.getAnchor();
+                        var isClickOnAnchor = _this._determineIfClickOnElement(anchorReference, e.srcElement);
+                        var isClickOnContainer = void 0;
+                        if (!isClickOnAnchor && _this.props.activePopupOptions.getElementTriggeringPopup) {
+                            var containerRef = _this.props.activePopupOptions.getElementTriggeringPopup();
+                            isClickOnContainer = _this._determineIfClickOnElement(containerRef, e.srcElement);
+                        }
+                        if (isClickOnAnchor || isClickOnContainer) {
+                            // If the press event was on the anchor, we can notify the caller about it.
+                            // Showing another animation while dimissing the popup creates a conflict in the UI making it not doing one of the
+                            // two animations (i.e.: Opening an actionsheet while dismissing a popup). We introduce this delay to make sure
+                            // the popup dimissing animation has finished before we call the event handler.
+                            if (_this.props.activePopupOptions.onAnchorPressed) {
+                                setTimeout(function () {
+                                    // We can't pass through the DOM event argument to the anchor event handler as the event we have at this
+                                    // point is a DOM Event and the anchor expect a Syntethic event. There doesn't seem to be any way to convert
+                                    // between them. Passing null for now.
+                                    _this.props.activePopupOptions.onAnchorPressed(null);
+                                }, 500);
+                            }
+                            // If the popup is meant to behave like a toggle, we should not dimiss the popup from here since the event came
+                            // from the anchor/container of the popup. The popup will be dismissed during the click handling of the
+                            // anchor/container.
+                            if (_this.props.activePopupOptions.dismissIfShown) {
+                                return;
+                            }
+                        }
+                        if (_this.props.activePopupOptions.preventDismissOnPress) {
+                            return;
+                        }
+                    }
+                    _this._dismissPopup();
+                });
+            }
+        };
+        _this._onMouseDownCapture = function (e) {
+            _this._updateKeyboardNavigationState(false);
+        };
+        _this._onKeyDownCapture = function (e) {
+            if (e.keyCode === KEY_CODE_TAB) {
+                _this._updateKeyboardNavigationState(true);
+            }
+            if (e.keyCode === KEY_CODE_ESC) {
+                // If Esc is pressed and the focused element stays the same after some time,
+                // switch the keyboard navigation off to dismiss the outline.
+                var activeElement_1 = document.activeElement;
+                if (_this._isNavigatingWithKeyboardUpateTimer) {
+                    window.clearTimeout(_this._isNavigatingWithKeyboardUpateTimer);
+                }
+                _this._isNavigatingWithKeyboardUpateTimer = window.setTimeout(function () {
+                    _this._isNavigatingWithKeyboardUpateTimer = undefined;
+                    if ((document.activeElement === activeElement_1) && activeElement_1 && (activeElement_1 !== document.body)) {
+                        _this._updateKeyboardNavigationState(false);
+                        FocusManager_1.default.resetFocus();
+                    }
+                }, 500);
+            }
+        };
+        _this._onKeyDown = function (e) {
+            Input_1.default.dispatchKeyDown(e);
+        };
+        _this._onKeyUp = function (e) {
+            if (_this.props.activePopupOptions && (e.keyCode === KEY_CODE_ESC)) {
+                if (e.stopPropagation) {
+                    e.stopPropagation();
+                }
+                _this._dismissPopup();
+                return;
+            }
+            Input_1.default.dispatchKeyUp(e);
+        };
         // Update announcement text.
-        this._newAnnouncementEventChangedSubscription =
-            Accessibility.newAnnouncementReadyEvent.subscribe(announcement => {
-                if (this.state.announcementText === announcement) {
+        _this._newAnnouncementEventChangedSubscription =
+            Accessibility_1.default.newAnnouncementReadyEvent.subscribe(function (announcement) {
+                if (_this.state.announcementText === announcement) {
                     // If the previous announcement is the same as the current announcement
                     // we will apapend a ' ' to it. This ensures that the text in DOM of aria-live region changes 
                     // and  will be read by screen Reader
-
                     announcement += ' ';
                 }
-
-                this.setState({
+                _this.setState({
                     announcementText: announcement
                 });
-        });
-
-        this.state = this._getInitialState();
-
+            });
+        _this.state = _this._getInitialState();
         // Initialize the root FocusManager which is aware of all
         // focusable elements.
-        this._focusManager = new FocusManager(null);
+        _this._focusManager = new FocusManager_1.default(null);
+        return _this;
     }
-
-    getChildContext() {
+    RootView.prototype.getChildContext = function () {
         // Provide the context with root FocusManager to all descendants.
         return {
             focusManager: this._focusManager
         };
-    }
-
-    private _getInitialState(): RootViewState {
+    };
+    RootView.prototype._getInitialState = function () {
         return {
             isMeasuringPopup: true,
             anchorPosition: 'left',
@@ -166,460 +198,278 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
             focusClass: this.props.mouseFocusOutline,
             announcementText: ''
         };
-    }
-
-    componentWillReceiveProps(prevProps: RootViewProps) {
+    };
+    RootView.prototype.componentWillReceiveProps = function (prevProps) {
         if (this.props.activePopupOptions !== prevProps.activePopupOptions) {
             this._stopHidePopupTimer();
-
             // If the popup changes, reset our state.
             this.setState(this._getInitialState());
         }
-    }
-
-    componentDidUpdate(prevProps: RootViewProps, prevState: RootViewState) {
+    };
+    RootView.prototype.componentDidUpdate = function (prevProps, prevState) {
         if (this.props.activePopupOptions) {
             this._stopHidePopupTimer();
             this._recalcPosition();
-
             if (!this._respositionPopupTimer) {
                 this._startRepositionPopupTimer();
             }
-
             if (!this.state.isMouseInPopup) {
                 this._startHidePopupTimer();
             }
-
             if (!this._clickHandlerInstalled) {
                 document.addEventListener('mousedown', this._tryClosePopup);
                 document.addEventListener('touchstart', this._tryClosePopup);
                 this._clickHandlerInstalled = true;
             }
-        } else {
+        }
+        else {
             this._stopRepositionPopupTimer();
-
             if (this._clickHandlerInstalled) {
                 document.removeEventListener('mousedown', this._tryClosePopup);
                 document.removeEventListener('touchstart', this._tryClosePopup);
                 this._clickHandlerInstalled = false;
             }
         }
-    }
-
-    componentDidMount() {
+    };
+    RootView.prototype.componentDidMount = function () {
         if (this.props.activePopupOptions) {
             this._recalcPosition();
         }
-
         if (!this.state.isMouseInPopup) {
             this._startHidePopupTimer();
         }
-
         if (this.props.activePopupOptions) {
             this._startRepositionPopupTimer();
         }
-
         if (!this._keyboardHandlerInstalled) {
             window.addEventListener('keydown', this._onKeyDown);
             window.addEventListener('keyup', this._onKeyUp);
-
             window.addEventListener('keydown', this._onKeyDownCapture, true); // Capture!
             window.addEventListener('mousedown', this._onMouseDownCapture, true); // Capture!
-
             this._keyboardHandlerInstalled = true;
         }
-    }
-
-    componentWillUnmount() {
+    };
+    RootView.prototype.componentWillUnmount = function () {
         this._stopHidePopupTimer();
         this._stopRepositionPopupTimer();
         this._newAnnouncementEventChangedSubscription.unsubscribe();
         this._newAnnouncementEventChangedSubscription = null;
-
         if (this._keyboardHandlerInstalled) {
             window.removeEventListener('keydown', this._onKeyDown);
             window.removeEventListener('keyup', this._onKeyUp);
-
             window.removeEventListener('keydown', this._onKeyDownCapture, true);
             window.removeEventListener('mousedown', this._onMouseDownCapture, true);
-
             this._keyboardHandlerInstalled = false;
         }
-    }
-
-    render() {
-        let rootViewStyle = {
+    };
+    RootView.prototype.render = function () {
+        var _this = this;
+        var rootViewStyle = {
             width: '100%',
             height: '100%',
             display: 'flex',
             cursor: 'default'
         };
-
-        let optionalPopup: JSX.Element = null;
+        var optionalPopup = null;
         if (this.props.activePopupOptions) {
-            let popupContainerStyle: React.CSSProperties = {
+            var popupContainerStyle = {
                 display: 'flex',
                 position: 'fixed',
                 top: this.state.popupTop,
                 left: this.state.popupLeft,
                 zIndex: 100001
             };
-
             // Are we artificially constraining the width and/or height?
             if (this.state.constrainedPopupWidth && this.state.constrainedPopupWidth !== this.state.popupWidth) {
                 popupContainerStyle['width'] = this.state.constrainedPopupWidth;
             }
-
             if (this.state.constrainedPopupHeight && this.state.constrainedPopupHeight !== this.state.popupHeight) {
                 popupContainerStyle['height'] = this.state.constrainedPopupHeight;
             }
-
-            optionalPopup = (
-                <div
-                    style={ popupContainerStyle }
-                    ref='popupContainer'
-                    onMouseEnter={ e => this._onMouseEnter(e) }
-                    onMouseLeave={ e => this._onMouseLeave(e) }
-                >
-                    { this.props.activePopupOptions.renderPopup(
-                        this.state.anchorPosition, this.state.anchorOffset,
-                        this.state.constrainedPopupWidth, this.state.constrainedPopupHeight) }
-                </div>
-            );
+            optionalPopup = (React.createElement("div", { style: popupContainerStyle, ref: 'popupContainer', onMouseEnter: function (e) { return _this._onMouseEnter(e); }, onMouseLeave: function (e) { return _this._onMouseLeave(e); } }, this.props.activePopupOptions.renderPopup(this.state.anchorPosition, this.state.anchorOffset, this.state.constrainedPopupWidth, this.state.constrainedPopupHeight)));
         }
-
-        let optionalModal: JSX.Element = null;
+        var optionalModal = null;
         if (this.props.modal) {
-            optionalModal = (
-                <ModalContainer>
-                    { this.props.modal }
-                </ModalContainer>
-            );
+            optionalModal = (React.createElement(ModalContainer_1.default, null, this.props.modal));
         }
-
-        return (
-            <div
-                className={ this.state.focusClass }
-                style={ rootViewStyle }
-            >
-                { this.props.mainView }
-                { optionalModal }
-                { optionalPopup }
-                <div
-                    style={ _styles.liveRegionContainer }
-                    aria-live={ AccessibilityUtil.accessibilityLiveRegionToString(Types.AccessibilityLiveRegion.Polite) }
-                    aria-atomic={ 'true' }
-                >
-                    { this.state.announcementText }
-                </div>
-            </div>
-        );
-    }
-
-    private _tryClosePopup = (e: MouseEvent) => {
-        // Dismiss a visible popup if there's a click outside.
-        let popupContainer = ReactDOM.findDOMNode(this.refs['popupContainer']);
-        let clickInPopup = false;
-        let el = e.target as HTMLElement;
-        while (el) {
-            if (el === popupContainer) {
-                clickInPopup = true;
-                break;
-            }
-            el = el.parentElement;
-        }
-
-        if (!clickInPopup && e.button !== _rightClickButtonCode ) {
-            _.defer(() => {
-                if (this.props.activePopupOptions) {
-                    const anchorReference = this.props.activePopupOptions.getAnchor();
-                    const isClickOnAnchor = this._determineIfClickOnElement(anchorReference, e.srcElement);
-
-                    let isClickOnContainer: boolean;
-                    if (!isClickOnAnchor && this.props.activePopupOptions.getElementTriggeringPopup) {
-                        const containerRef = this.props.activePopupOptions.getElementTriggeringPopup();
-                        isClickOnContainer = this._determineIfClickOnElement(containerRef, e.srcElement);
-                    }
-
-                    if (isClickOnAnchor || isClickOnContainer) {
-                        // If the press event was on the anchor, we can notify the caller about it.
-                        // Showing another animation while dimissing the popup creates a conflict in the UI making it not doing one of the
-                        // two animations (i.e.: Opening an actionsheet while dismissing a popup). We introduce this delay to make sure
-                        // the popup dimissing animation has finished before we call the event handler.
-                        if (this.props.activePopupOptions.onAnchorPressed) {
-                            setTimeout(() => {
-                                // We can't pass through the DOM event argument to the anchor event handler as the event we have at this
-                                // point is a DOM Event and the anchor expect a Syntethic event. There doesn't seem to be any way to convert
-                                // between them. Passing null for now.
-                                this.props.activePopupOptions.onAnchorPressed(null);
-                            }, 500);
-                        }
-
-                        // If the popup is meant to behave like a toggle, we should not dimiss the popup from here since the event came
-                        // from the anchor/container of the popup. The popup will be dismissed during the click handling of the
-                        // anchor/container.
-                        if (this.props.activePopupOptions.dismissIfShown) {
-                            return;
-                        }
-                    }
-
-                    if (this.props.activePopupOptions.preventDismissOnPress) {
-                        return;
-                    }
-                }
-
-                this._dismissPopup();
-            });
-        }
-    }
-
-    private _determineIfClickOnElement(elementReference: React.Component<any, any>, eventSource: Element): boolean {
-        const element = ReactDOM.findDOMNode<HTMLElement>(elementReference);
-        const isClickOnElement = element && element.contains(eventSource);
+        return (React.createElement("div", { className: this.state.focusClass, style: rootViewStyle },
+            this.props.mainView,
+            optionalModal,
+            optionalPopup,
+            React.createElement("div", { style: _styles.liveRegionContainer, "aria-live": AccessibilityUtil_1.default.accessibilityLiveRegionToString(Types.AccessibilityLiveRegion.Polite), "aria-atomic": 'true' }, this.state.announcementText)));
+    };
+    RootView.prototype._determineIfClickOnElement = function (elementReference, eventSource) {
+        var element = ReactDOM.findDOMNode(elementReference);
+        var isClickOnElement = element && element.contains(eventSource);
         return isClickOnElement;
-    }
-
-    private _onMouseDownCapture = (e: MouseEvent) => {
-        this._updateKeyboardNavigationState(false);
-    }
-
-    private _onKeyDownCapture = (e: KeyboardEvent) => {
-        if (e.keyCode === KEY_CODE_TAB) {
-            this._updateKeyboardNavigationState(true);
-        }
-
-        if (e.keyCode === KEY_CODE_ESC) {
-            // If Esc is pressed and the focused element stays the same after some time,
-            // switch the keyboard navigation off to dismiss the outline.
-            const activeElement = document.activeElement;
-
-            if (this._isNavigatingWithKeyboardUpateTimer) {
-                window.clearTimeout(this._isNavigatingWithKeyboardUpateTimer);
-            }
-
-            this._isNavigatingWithKeyboardUpateTimer = window.setTimeout(() => {
-                this._isNavigatingWithKeyboardUpateTimer = undefined;
-
-                if ((document.activeElement === activeElement) && activeElement && (activeElement !== document.body)) {
-                    this._updateKeyboardNavigationState(false);
-                    FocusManager.resetFocus();
-                }
-            }, 500);
-        }
-    }
-
-    private _updateKeyboardNavigationState(isNavigatingWithKeyboard: boolean) {
+    };
+    RootView.prototype._updateKeyboardNavigationState = function (isNavigatingWithKeyboard) {
         if (this._isNavigatingWithKeyboardUpateTimer) {
             window.clearTimeout(this._isNavigatingWithKeyboardUpateTimer);
             this._isNavigatingWithKeyboardUpateTimer = undefined;
         }
-
         if (this._isNavigatingWithKeyboard !== isNavigatingWithKeyboard) {
             this._isNavigatingWithKeyboard = isNavigatingWithKeyboard;
-
-            UserInterface.keyboardNavigationEvent.fire(isNavigatingWithKeyboard);
-
-            const focusClass = isNavigatingWithKeyboard ? this.props.keyBoardFocusOutline : this.props.mouseFocusOutline;
-
+            UserInterface_1.default.keyboardNavigationEvent.fire(isNavigatingWithKeyboard);
+            var focusClass = isNavigatingWithKeyboard ? this.props.keyBoardFocusOutline : this.props.mouseFocusOutline;
             if (this.state.focusClass !== focusClass) {
                 this.setState({ focusClass: focusClass });
             }
         }
-    }
-
-    private _onKeyDown = (e: KeyboardEvent) => {
-        Input.dispatchKeyDown(e as any);
-    }
-
-    private _onKeyUp = (e: KeyboardEvent) => {
-        if (this.props.activePopupOptions && (e.keyCode === KEY_CODE_ESC)) {
-            if (e.stopPropagation) {
-                e.stopPropagation();
-            }
-            this._dismissPopup();
-            return;
-        }
-
-        Input.dispatchKeyUp(e as any);
-    }
-
-    private _onMouseEnter(e: React.MouseEvent) {
+    };
+    RootView.prototype._onMouseEnter = function (e) {
         this.setState({
             isMouseInPopup: true
         });
-
         this._stopHidePopupTimer();
-    }
-
-    private _onMouseLeave(e: React.MouseEvent) {
+    };
+    RootView.prototype._onMouseLeave = function (e) {
         this.setState({
             isMouseInPopup: false
         });
-
         this._startHidePopupTimer();
-    }
-
-    private _startHidePopupTimer() {
+    };
+    RootView.prototype._startHidePopupTimer = function () {
+        var _this = this;
         if (this.props.autoDismiss) {
             // Should we immediately hide it, or did the caller request a delay?
             if (this.props.autoDismissDelay > 0) {
-                this._hidePopupTimer = window.setTimeout(() => {
-                    this._hidePopupTimer = null;
-                    this._dismissPopup();
-                }, this.props.autoDismissDelay) as any as number;
-            } else {
+                this._hidePopupTimer = window.setTimeout(function () {
+                    _this._hidePopupTimer = null;
+                    _this._dismissPopup();
+                }, this.props.autoDismissDelay);
+            }
+            else {
                 this._dismissPopup();
             }
         }
-    }
-
-    private _stopHidePopupTimer() {
+    };
+    RootView.prototype._stopHidePopupTimer = function () {
         if (this._hidePopupTimer) {
             clearTimeout(this._hidePopupTimer);
             this._hidePopupTimer = null;
         }
-    }
-
-    private _dismissPopup() {
+    };
+    RootView.prototype._dismissPopup = function () {
         if (this.props.onDismissPopup) {
             this.props.onDismissPopup();
         }
-    }
-
-    private _startRepositionPopupTimer() {
-        this._respositionPopupTimer = setInterval(() => {
-            this._recalcPosition();
-        }, 500) as any as number;
-    }
-
-    private _stopRepositionPopupTimer() {
+    };
+    RootView.prototype._startRepositionPopupTimer = function () {
+        var _this = this;
+        this._respositionPopupTimer = setInterval(function () {
+            _this._recalcPosition();
+        }, 500);
+    };
+    RootView.prototype._stopRepositionPopupTimer = function () {
         if (this._respositionPopupTimer) {
             clearInterval(this._respositionPopupTimer);
             this._respositionPopupTimer = null;
         }
-    }
-
+    };
     // Recalculates the position and constrained size of the popup based on the current position of the anchor and the
     // window size. If necessary, it also measures the unconstrained size of the popup.
-    private _recalcPosition() {
+    RootView.prototype._recalcPosition = function () {
         // Make a copy of the old state.
-        let newState: RootViewState = _.extend({}, this.state);
-
+        var newState = _.extend({}, this.state);
         if (this.state.isMeasuringPopup) {
             // Get the width/height of the popup.
-            let popup = ReactDOM.findDOMNode<HTMLElement>(this.refs['popupContainer']);
+            var popup = ReactDOM.findDOMNode(this.refs['popupContainer']);
             if (!popup) {
                 return;
             }
-
             newState.isMeasuringPopup = false;
             newState.popupHeight = popup.clientHeight;
             newState.popupWidth = popup.clientWidth;
         }
-
         // Get the anchor element.
-        let anchor = ReactDOM.findDOMNode<HTMLElement>(
-            this.props.activePopupOptions.getAnchor());
-
+        var anchor = ReactDOM.findDOMNode(this.props.activePopupOptions.getAnchor());
         // If the anchor has disappeared, dismiss the popup.
         if (!anchor) {
             this._dismissPopup();
             return;
         }
-
         // Start by assuming that we'll be unconstrained.
         newState.constrainedPopupHeight = newState.popupHeight;
         newState.constrainedPopupWidth = newState.popupWidth;
-
         // Get the width/height of the full window.
-        let windowHeight = window.innerHeight;
-        let windowWidth = window.innerWidth;
-
+        var windowHeight = window.innerHeight;
+        var windowWidth = window.innerWidth;
         // Calculate the absolute position of the anchor element's top/left.
-        let anchorRect = anchor.getBoundingClientRect();
-
+        var anchorRect = anchor.getBoundingClientRect();
         // If the anchor is no longer in the window's bounds, cancel the popup.
         if (anchorRect.left >= windowWidth || anchorRect.right <= 0 ||
-                anchorRect.bottom <= 0 || anchorRect.top >= windowHeight) {
+            anchorRect.bottom <= 0 || anchorRect.top >= windowHeight) {
             this._dismissPopup();
             return;
         }
-
-        let positionsToTry: Types.PopupPosition[] = this.props.activePopupOptions.positionPriorities;
+        var positionsToTry = this.props.activePopupOptions.positionPriorities;
         if (!positionsToTry || positionsToTry.length === 0) {
             positionsToTry = ['bottom', 'right', 'top', 'left'];
         }
-
         if (this.props.activePopupOptions.useInnerPositioning) {
             // If the popup is meant to be shown inside the anchor we need to recalculate
             // the position differently.
             this._recalcInnerPosition(anchorRect, newState);
             return;
         }
-
-        let foundPerfectFit = false;
-        let foundPartialFit = false;
-        positionsToTry.forEach(pos => {
+        var foundPerfectFit = false;
+        var foundPartialFit = false;
+        positionsToTry.forEach(function (pos) {
             if (!foundPerfectFit) {
-                let absLeft = 0;
-                let absTop = 0;
-                let anchorOffset = 0;
-                let constrainedWidth = 0;
-                let constrainedHeight = 0;
-
+                var absLeft = 0;
+                var absTop = 0;
+                var anchorOffset = 0;
+                var constrainedWidth = 0;
+                var constrainedHeight = 0;
                 switch (pos) {
                     case 'bottom':
                         absTop = anchorRect.bottom;
                         absLeft = anchorRect.left + (anchorRect.width - newState.popupWidth) / 2;
                         anchorOffset = newState.popupWidth / 2;
-
                         if (newState.popupHeight <= windowHeight - _popupAlleyWidth - anchorRect.bottom) {
                             foundPerfectFit = true;
-                        } else if (!foundPartialFit) {
+                        }
+                        else if (!foundPartialFit) {
                             constrainedHeight = windowHeight - _popupAlleyWidth - anchorRect.bottom;
                         }
                         break;
-
                     case 'top':
                         absTop = anchorRect.top - newState.popupHeight;
                         absLeft = anchorRect.left + (anchorRect.width - newState.popupWidth) / 2;
                         anchorOffset = newState.popupWidth / 2;
-
                         if (newState.popupHeight <= anchorRect.top - _popupAlleyWidth) {
                             foundPerfectFit = true;
-                        } else if (!foundPartialFit) {
+                        }
+                        else if (!foundPartialFit) {
                             constrainedHeight = anchorRect.top - _popupAlleyWidth;
                         }
                         break;
-
                     case 'right':
                         absLeft = anchorRect.right;
                         absTop = anchorRect.top + (anchorRect.height - newState.popupHeight) / 2;
                         anchorOffset = newState.popupHeight / 2;
-
                         if (newState.popupWidth <= windowWidth - _popupAlleyWidth - anchorRect.right) {
                             foundPerfectFit = true;
-                        } else if (!foundPartialFit) {
+                        }
+                        else if (!foundPartialFit) {
                             constrainedWidth = windowWidth - _popupAlleyWidth - anchorRect.right;
                         }
                         break;
-
                     case 'left':
                         absLeft = anchorRect.left - newState.popupWidth;
                         absTop = anchorRect.top + (anchorRect.height - newState.popupHeight) / 2;
                         anchorOffset = newState.popupHeight / 2;
-
                         if (newState.popupWidth <= anchorRect.left - _popupAlleyWidth) {
                             foundPerfectFit = true;
-                        } else if (!foundPartialFit) {
+                        }
+                        else if (!foundPartialFit) {
                             constrainedWidth = anchorRect.left - _popupAlleyWidth;
                         }
                         break;
                 }
-
-                let effectiveWidth = constrainedWidth || newState.popupWidth;
-                let effectiveHeight = constrainedHeight || newState.popupHeight;
-
+                var effectiveWidth = constrainedWidth || newState.popupWidth;
+                var effectiveHeight = constrainedHeight || newState.popupHeight;
                 // Make sure we're not hanging off the bounds of the window.
                 if (absLeft < _popupAlleyWidth) {
                     if (pos === 'top' || pos === 'bottom') {
@@ -629,7 +479,8 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                         }
                     }
                     absLeft = _popupAlleyWidth;
-                } else if (absLeft > windowWidth - _popupAlleyWidth - effectiveWidth) {
+                }
+                else if (absLeft > windowWidth - _popupAlleyWidth - effectiveWidth) {
                     if (pos === 'top' || pos === 'bottom') {
                         anchorOffset -= (windowWidth - _popupAlleyWidth - effectiveWidth - absLeft);
                         if (anchorOffset < _minAnchorOffset || anchorOffset > effectiveWidth - _minAnchorOffset) {
@@ -638,7 +489,6 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                     }
                     absLeft = windowWidth - _popupAlleyWidth - effectiveWidth;
                 }
-
                 if (absTop < _popupAlleyWidth) {
                     if (pos === 'right' || pos === 'left') {
                         anchorOffset += absTop - _popupAlleyWidth;
@@ -647,7 +497,8 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                         }
                     }
                     absTop = _popupAlleyWidth;
-                } else if (absTop > windowHeight - _popupAlleyWidth - effectiveHeight) {
+                }
+                else if (absTop > windowHeight - _popupAlleyWidth - effectiveHeight) {
                     if (pos === 'right' || pos === 'left') {
                         anchorOffset -= (windowHeight - _popupAlleyWidth - effectiveHeight - absTop);
                         if (anchorOffset < _minAnchorOffset || anchorOffset > effectiveHeight - _minAnchorOffset) {
@@ -656,7 +507,6 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                     }
                     absTop = windowHeight - _popupAlleyWidth - effectiveHeight;
                 }
-
                 if (foundPerfectFit || effectiveHeight > 0 || effectiveWidth > 0) {
                     newState.popupTop = absTop;
                     newState.popupLeft = absLeft;
@@ -664,53 +514,48 @@ export class RootView extends React.Component<RootViewProps, RootViewState> {
                     newState.anchorPosition = pos;
                     newState.constrainedPopupWidth = effectiveWidth;
                     newState.constrainedPopupHeight = effectiveHeight;
-
                     foundPartialFit = true;
                 }
             }
         });
-
         if (!_.isEqual(newState, this.state)) {
             this.setState(newState);
         }
-    }
-
-    private _recalcInnerPosition(anchorRect: ClientRect, newState: RootViewState) {
+    };
+    RootView.prototype._recalcInnerPosition = function (anchorRect, newState) {
         // For inner popups we only accept the first position of the priorities since there should always be room for the bubble.
-        const pos = this.props.activePopupOptions.positionPriorities[0];
-
+        var pos = this.props.activePopupOptions.positionPriorities[0];
         switch (pos) {
             case 'top':
                 newState.popupTop = anchorRect.top + anchorRect.height - newState.constrainedPopupHeight;
                 newState.popupLeft = anchorRect.left + anchorRect.height / 2 - newState.constrainedPopupWidth / 2;
                 newState.anchorOffset = newState.popupWidth / 2;
                 break;
-
             case 'bottom':
                 newState.popupTop = anchorRect.top + newState.constrainedPopupHeight;
                 newState.popupLeft = anchorRect.left + anchorRect.height / 2 - newState.constrainedPopupWidth / 2;
                 newState.anchorOffset = newState.popupWidth / 2;
                 break;
-
             case 'left':
                 newState.popupTop = anchorRect.top + anchorRect.height / 2 - newState.constrainedPopupHeight / 2;
                 newState.popupLeft = anchorRect.left + anchorRect.width - newState.constrainedPopupWidth;
                 newState.anchorOffset = newState.popupHeight / 2;
                 break;
-
             case 'right':
                 newState.popupTop = anchorRect.top + anchorRect.height / 2 - newState.constrainedPopupHeight / 2;
                 newState.popupLeft = anchorRect.left;
                 newState.anchorOffset = newState.popupHeight / 2;
                 break;
         }
-
         newState.anchorPosition = pos;
-
         if (!_.isEqual(newState, this.state)) {
             this.setState(newState);
         }
-    }
-}
-
-export default RootView;
+    };
+    RootView.childContextTypes = {
+        focusManager: PropTypes.object
+    };
+    return RootView;
+}(React.Component));
+exports.RootView = RootView;
+exports.default = RootView;
